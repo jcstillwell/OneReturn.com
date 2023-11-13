@@ -1,0 +1,52 @@
+.auth-form-container {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  align-items: center;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 30px;
+  background-image: linear-gradient(79deg, #0B2447, #0d2745, #19376D);
+}
+
+.login-form, .register-form {
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    align-items: center;
+  }
+  
+  .login-form input, .register-form input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    color: #000000;
+    outline: none;
+  }
+  
+  .login-form button, .register-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1888ff;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .link-btn {
+    padding: 10px 20px;
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0f355e;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .link-btn:hover {
+    background-color: #174d88;
+    border: 1px solid black;
+  }

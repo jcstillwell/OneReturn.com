@@ -1,0 +1,6 @@
+Django==4.2.4
+djangorestframework>=3.11,<4.0
+django-cors-headers>=3.5.0
+psycopg2-binary
+gunicorn==20.1.0
+twilio

@@ -1,0 +1,36 @@
+.dropdown-container {
+    position: absolute;
+    top: 60px;
+    right: 30px;
+    width: 130px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(26, 23, 23);
+    border: 1px solid black;
+}
+
+.dropdown-container::before {
+    position: absolute;
+    top: -1rem;
+    width: 25px;
+    height: 25px;
+    background-color: gray;
+}
+
+.dropdown-menu {
+    list-style: none;
+    align-items: center;
+}
+
+.dropdown-item {
+    color: white;
+    padding: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    color: grey;
+    cursor: pointer;
+    font-size: 1.2rem;
+}

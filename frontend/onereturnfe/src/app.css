@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    margin: 0;
+    background-color: white;
+}
+
+.app-content {
+    display: flex;
+    min-height: 100vh;
+    margin-top: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-content-dashboard {
+  display: flex;
+  margin-left: 150px;
+  margin-top: 60px;
+  min-height: 100vh;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+}
