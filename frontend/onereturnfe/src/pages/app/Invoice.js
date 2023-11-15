@@ -24,7 +24,7 @@ const Invoice = () => {
         console.log(sharedWith);
         axios
         .post(
-            'http://127.0.0.1/userapi/edit/',
+            'http://onereturn.com/userapi/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -52,7 +52,7 @@ const Invoice = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('http://127.0.0.1/userapi/get/', {
+        axios.get('http://onereturn.com/userapi/get/', {
             params: {
                 type: 'SINGLE',
                 query: invoiceID

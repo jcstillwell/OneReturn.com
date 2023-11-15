@@ -100,10 +100,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'or-database',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'Cicada3301',
-        'HOST': 'or-database.c4jih2f1nvwu.us-east-1.rds.amazonaws.com', # or the address of your database server
+        'HOST': 'host.docker.internal', # or the address of your database server
         'PORT': '', # leave as an empty string to use the default port
     }
 }

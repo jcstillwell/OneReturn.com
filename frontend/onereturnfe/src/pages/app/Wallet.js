@@ -55,7 +55,7 @@ const Wallet = () => {
         console.log(sharedWith);
         axios
         .post(
-            'http://127.0.0.1/userapi/edit/',
+            'http://onereturn.com/userapi/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -82,7 +82,7 @@ const Wallet = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('http://127.0.0.1/userapi/get/', {
+        axios.get('http://onereturn.com/userapi/get/', {
             headers: {
                 'Authorization': "Token " + token
             }
@@ -237,7 +237,7 @@ const Shared = () => {
         console.log(sharedWith);
         axios
         .post(
-            'http://127.0.0.1/userapi/edit/',
+            'http://onereturn.com/userapi/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -262,7 +262,7 @@ const Shared = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('http://127.0.0.1/userapi/shared/', {
+        axios.get('http://onereturn.com/userapi/shared/', {
             headers: {
                 'Authorization': "Token " + token
             }
