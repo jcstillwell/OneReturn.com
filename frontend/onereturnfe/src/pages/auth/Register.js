@@ -19,7 +19,7 @@ const RegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('http://onereturn.com/userapi/verify/', {
+            axios.get('https://onereturn.com/userapi/verify/', {
                 params: {
                     'token': 'null',
                     'method': 'CHECK',
@@ -49,7 +49,7 @@ const RegisterPreVerify = (props) =>
 
         checkVerification();
         try {
-            const response = await axios.post('http://onereturn.com/userapi/sendEmail/', {
+            const response = await axios.post('https://onereturn.com/userapi/sendEmail/', {
                 'email':email,
             });
             console.log(response.data);
@@ -116,7 +116,7 @@ const Register = (props) =>
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://onereturn.com/userapi/register/', {
+            const response = await axios.post('https://onereturn.com/userapi/register/', {
                 'uuid':Cookies.get('active-uuid'),
                 'first_name':firstName,
                 'last_name':lastName,
@@ -128,7 +128,7 @@ const Register = (props) =>
             console.log(response.data);
             console.log(Cookies.get('email_temp_save'))
             try {
-                const response = await axios.post('http://onereturn.com/userapi/authenticate/', {
+                const response = await axios.post('https://onereturn.com/userapi/authenticate/', {
                     'email': email, // Extremely insecure remove after demo.
                     'password':pass,
                 });
