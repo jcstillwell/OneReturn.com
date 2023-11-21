@@ -9,6 +9,7 @@ urlpatterns = [
     path('verify/', views.Verify.as_view(), name='verify'),
     path('search/', views.SearchReceipt.as_view(), name='search'),
     path('authenticate/', views.AuthenticateView.as_view(), name='authenticate'),
+    path('authenticateMerchant/', views.MerchantAuthenticateView.as_view(), name='authenticatemerchant'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('changeSettings/', views.ChangeSettings.as_view(), name='changesettings'),

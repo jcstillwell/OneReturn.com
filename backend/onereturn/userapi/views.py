@@ -13,7 +13,7 @@ from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 from django.db.models import Q, Count
 
-from core.models import Invoice, Item, AppUser, AppUserManager, UnverifiedUser
+from core.models import Invoice, Item, AppUser, AppUserManager, UnverifiedUser, MerchantAccountManager, MerchantAccount
 from .serializers import *
 
 class GetShared(APIView):
@@ -237,6 +237,28 @@ class AuthenticateView(APIView):
                     return Response({"message":"user not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
             except AppUser.DoesNotExist:
                 return Response({"message":"email not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+class MerchantAuthenticateView(APIView):
+    def post(self, request):
+        if request.data:
+            merchantID = request.data.get('merchantID', None)
+            merchantAPIKey = request.data.get('merchantAPIKey', None)
+            merchantMasterPassword = request.data.get('merchantMasterPassword', None)
+            try:
+                merchant = MerchantAccount.objects.get(merchantID = merchantID)
+                auth = authenticate(request, merchantID=merchantID, password=merchantMasterPassword)
+                if auth is not None:
+                    token, created = token.objects.get_or_create(user=merchant)
+                    merchant_data = {'merchant-id':merchant.merchantID, 'merchant-api-key':merchant.merchantAPIKey}
+                    if merchant.merchantAPIKey != merchantAPIKey:
+                        return Response({'status':'error', 'message':'API key is either invalid or expired, please try again or contact customer support.'})
+                    else:
+                        return Response({'status':'OK', 'token':token.key, 'data':merchant_data}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
+            except MerchantAccount.DoesNotExist:
+                return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
+
         
 class LogoutView(APIView):
     authentication_classes = [TokenAuthentication]

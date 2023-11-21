@@ -25,6 +25,25 @@ class AppUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+    
+class MerchantAccountManager(BaseUserManager):
+    def create_user(self, merchantID, merchantMasterPassword, merchantAPIKey):
+
+        if not merchantID == True:
+            raise ValueError('How could this have even happened.')
+        
+        MerchantAccount = self.model(
+            merchantID = merchantID, 
+            merchantMasterPassword = merchantMasterPassword, 
+            merchantAPIKey = merchantAPIKey,
+        )
+
+        def __str__(self):
+            return self.email
+        
+        MerchantAccount.set_password(merchantMasterPassword)
+        MerchantAccount.save(using=self._db)
+        return MerchantAccount
 
 class AppUser(AbstractBaseUser):
     email = models.EmailField(unique=True, default=None, null=True)
@@ -44,6 +63,18 @@ class AppUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    
+class MerchantAccount(AbstractBaseUser):
+    merchantID = models.CharField(max_length=100, default=None)
+    merchantMasterPassword = models.CharField(max_length=100, default=None)
+    merchantAPIKey = models.CharField(max_length=255, default=None)
+    
+    USERNAME_FIELD = 'merchantID'
+
+    objects = MerchantAccountManager()
+
+    def __str__(self):
+        return self.merchantID
 
 class Item(models.Model):
     name = models.CharField(max_length=100, default=None)
@@ -63,6 +94,7 @@ class Invoice(models.Model):
     merchantID = models.CharField(max_length = 100, default=None)
     merchantLocNumber = models.CharField(max_length = 100, default=None)
     merchantAddress = models.CharField(max_length = 100, default=None)
+    merchantName = models.CharField(max_length=100, default=None)
     invoiceID = models.CharField(max_length=100, default=None)
     dateCreated = models.DateTimeField(default=None)
     flagged = models.BooleanField(default=False)

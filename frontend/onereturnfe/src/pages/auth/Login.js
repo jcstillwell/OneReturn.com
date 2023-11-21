@@ -13,7 +13,7 @@ const Login = (props) =>
     const [pass, setPass] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('token'))
+    const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('token'));
     const { dispatch } = useContext(AuthContext);
     let navigate = useNavigate();
 
@@ -31,12 +31,12 @@ const Login = (props) =>
                 Cookies.set('data', JSON.stringify(response.data.data), {expires: 7});
                 dispatch({type: 'LOGIN', payload: response.data});
                 navigate("/wallet");
-                console.log(JSON.stringify(response.data.data));
+                console.log(JSON.stringify(response.data.data)); //Remove this!
                 setError(false);
                 setErrorMsg('');
             }
         } catch (error) {
-            console.log(error);
+            console.log(error); //Remove this!
             setError(true);
             setErrorMsg(error.response.data.message);
         }
