@@ -96,14 +96,15 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'onereturn',
         'USER': 'postgres',
         'PASSWORD': 'Cicada3301',
-        'HOST': 'host.docker.internal', # or the address of your database server
+        'HOST': 'onereturn.c4jih2f1nvwu.us-east-1.rds.amazonaws.com', # or the address of your database server
         'PORT': '', # leave as an empty string to use the default port
     }
 }
