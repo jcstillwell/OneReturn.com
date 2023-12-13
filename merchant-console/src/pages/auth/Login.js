@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
+import './css/login.css';
 
 const MerchantLogin = (props) =>
 {
@@ -24,7 +25,7 @@ const MerchantLogin = (props) =>
                 'merchantMasterPassword':merchantMasterPassword,
             });
 
-            if (response.data.status == 'OK') {
+            if (response.data.status === 'OK') {
                 Cookies.set('merchant-auth-token', response.data.token, {expires: 7});
                 navigate("/console");
                 setError(false);
@@ -49,10 +50,11 @@ const MerchantLogin = (props) =>
                 <input value={merchantAPIKey} onChange={(e) => setMerchantAPIKey(e.target.value)} type='text' placeholder="Your current active merchant API Key"/>
                 <label htmlFor=''>Merchant Master Password</label>
                 <input value={merchantMasterPassword} onChange={(e) => setMerchantMasterPassword(e.target.value)} type='password' placeholder="Your merchant password"/>
+                <button type="submit">Sign In</button>
             </form>
         </div>
     )
 
 }
 
-export default MerchantLogin();
+export default MerchantLogin;
