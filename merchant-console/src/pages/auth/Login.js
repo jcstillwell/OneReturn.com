@@ -19,7 +19,7 @@ const MerchantLogin = (props) =>
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://onereturn.com/userapi/authenticateMerchant', {
+            const response = await axios.post('https://onereturn.com/userapi/authenticateMerchant/', {
                 'merchantID':merchantID,
                 'merchantAPIKey':merchantAPIKey,
                 'merchantMasterPassword':merchantMasterPassword,
