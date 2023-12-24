@@ -5,22 +5,20 @@
 
 body {
     margin: 0;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
 }
 
 .app-content {
     display: flex;
-    min-height: 100vh;
-    margin-top: 60px;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, rgb(0, 0, 92), rgb(48, 47, 47));
 }
 
 .app-content-dashboard {
   display: flex;
   margin-left: 150px;
-  margin-top: 60px;
-  min-height: 100vh;
   background-color: white;
   justify-content: center;
   align-items: center;

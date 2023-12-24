@@ -178,6 +178,15 @@ class GetInvoice(APIView):
             })
 
         return Response({"invoices":invoice_list})
+    
+class GetMerchantViewInvoice(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.data:
+            merchantID = request.data.get('merchantID')
+            merchantAPIKey = request.data.get('merchantAPIKey')
 
       
 class ChangeSettings(APIView):

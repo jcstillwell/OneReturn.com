@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import './css/login.css';
 
-const MerchantLogin = (props) =>
+const MerchantLogin = () =>
 {
 
     const [merchantID, setMerchantID] = useState('');
@@ -52,6 +52,7 @@ const MerchantLogin = (props) =>
                 <input value={merchantMasterPassword} onChange={(e) => setMerchantMasterPassword(e.target.value)} type='password' placeholder="Your merchant password"/>
                 <button type="submit">Sign In</button>
             </form>
+            <button className="link-btn" onClick={() => navigate('/merchantregistration')}>Haven't signed up for OneReturn Business yet?. Click here to get started.</button>
         </div>
     )
 

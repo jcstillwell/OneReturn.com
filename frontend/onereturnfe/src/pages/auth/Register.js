@@ -75,7 +75,7 @@ const RegisterPreVerify = (props) =>
             <form className='register-pre-verify' onSubmit={handleSubmit}>
                 <div className='pre-verify-titles'>
                     <h4>Welcome to the inbox built exclusively for managing receipts, no email sorting involved.</h4>
-                    <p>First, lets confirm your email address.</p>
+                    <p>First, let's confirm your email address.</p>
                 </div>
                 {confirmClicked && (
                         <div className='pre-verify-confirmation-message'>

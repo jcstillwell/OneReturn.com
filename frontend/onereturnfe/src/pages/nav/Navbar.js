@@ -30,16 +30,16 @@ const Navbar = () => {
                     <>
                         <ul className='nav-menu'>
                             <li className="nav-item">
-                                <Link to="/home" className="nav-links" smooth={true} duration={500}>Home</Link>
+                                <Link to="home" className="nav-links" smooth={true} duration={500}>Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="section-2" className="nav-links">For Businesses</Link>
+                                <a href="/home" className="nav-links">For Businesses</a>
                             </li>
                             <li className="nav-item">
-                                <Link to="section-3" className="nav-links">Pricing</Link>
+                                <a href="/home" className="nav-links">Pricing</a>
                             </li>
                             <li>
-                                <Link to="api.onereturn.com" className="nav-links">API</Link>
+                                <a href="https://api.onereturn.com" className="nav-links">API</a>
                             </li>
                             <li className="nav-item">
                                 <Link to="/login" className="nav-links">Login</Link>
