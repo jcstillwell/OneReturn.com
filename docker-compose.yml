@@ -38,3 +38,4 @@ services:
 volumes:
   react_build:
   merchant-react-build:
+  api-frontend-build:
