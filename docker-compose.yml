@@ -19,7 +19,7 @@ services:
       - merchant-react-build:/merchant-app/build
   api-frontend:
     build:
-      context: ./api.onereturn.com/api-frontend
+      context: ./api.onereturn.com-fe/api-frontend
     volumes:
       - api-frontend-build:/api-app/build
   nginx:
