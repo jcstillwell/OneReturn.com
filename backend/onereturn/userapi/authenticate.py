@@ -62,7 +62,7 @@ def merchantLeadEmail(source_email, to_email, password, confirmationID, merchant
      html_content = f"""
     <html>
     <body>
-        <h1>{merchantInfo['name']} ({merchantInfo['type']}) is looking to use OneReturn for their business!</h1>
+        <h1>{merchantInfo['businessName']} ({merchantInfo['businessType']}) is looking to use OneReturn for their business!</h1>
         <p>A temporary account has been created for them under the id {confirmationID}. Please review this request and click confirm if you would like to move forward with the request.</p>
         <p>Below is the information submitted by the potential client:</p>
         <li>Business Name: {merchantInfo['businessName']}<li>
