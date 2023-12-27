@@ -83,7 +83,7 @@ class SendEmail(APIView):
                 tempUser = UnverifiedUser.objects.create(
                     email=to_email
                 )
-                verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/userapi/verify?token={tempUser.token}")
+                verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/userapi/userapi/verify?token={tempUser.token}")
                 return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
                 
 
@@ -329,7 +329,7 @@ class MerchantRegisterViewLead(APIView):
                 temporaryUserID = f'{businessName.strip(" ", "")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
                 temporaryPassword = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
             )
-            merchantLeadEmail(source_email, primaryEmailAddress, email_password, tempUser.confirmationID, merchantInfo, f"https://onereturn.com/userapi/confirmLead?confirmationID={tempUser.confirmationID}")
+            merchantLeadEmail(source_email, 'jcseagle21@gmail.com', email_password, tempUser.confirmationID, merchantInfo, f"https://onereturn.com/userapi/confirmLead?confirmationID={tempUser.confirmationID}")
             return Response({'status':'OK', 'message':f'Thank you! your information has been sent over for review and you can expect to hear back from us within the next 1-2 days, your confirmation ID is: {tempUser.confirmationID}'}, status=status.HTTP_200_OK)
             
 class GetMerchantViewInvoice(APIView):
