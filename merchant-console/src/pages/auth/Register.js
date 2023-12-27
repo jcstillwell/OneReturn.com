@@ -38,7 +38,8 @@ const MerchantRegister = () => {
             });
 
             if (response.data.status === 'OK') {
-                navigate('/confirm/${response.data.confirmationID}');
+                const path = "/confirmation/" + response.data.confirmationID;
+                navigate(path);
                 setError(false);
                 setErrorMsg('');
             } else {
