@@ -8,38 +8,26 @@ const Landing = () => {
 
     const [hasScrolled, setHasScrolled] = useState(false);
     const [scrollPos, setScrollPos] = useState(0);
+    const [lastScrollPos, setLastScrollPos] = useState(0);
     let navigate = useNavigate();
 
 
-    useEffect(() => {
-        const handleScroll = (event) => {
-            setScrollPos(prevScrollPos => prevScrollPos + event.deltaY / 100);
-            setHasScrolled(true);
-        }
-
-        window.addEventListener('wheel', handleScroll);
-
-        return () => {
-            window.removeEventListener('wheel', handleScroll);
-        }
-    }, []);
-
     return (
         <div className="main-container">
-            <ProgressWheel scrollValue={scrollPos} maxValue={100} />
-            <motion.div className="main-splash-text"
-                initial={{ opacity: 0}}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-            >
-                <h1>One place for all of your digital receipts, absolutely zero email sorting involved.</h1>
-                <h1>{scrollPos}</h1>
-            </motion.div>
+            <div className="main-landing-section">
+                <motion.div className="main-splash-text"
+                    initial={{scale: .5}}
+                    animate={{scale: 1}}
+                >
+                    <h1>One place for all of your digital receipts, absolutely zero email sorting involved.</h1>
+                </motion.div>
+            </div>
 
             <button className="main-trial-button" onClick={() => navigate('/preregister')}><h3>Try OneReturn for personal use.</h3></button>
 
 
-            <div className="for-business">
+            <div className="for-business" id='for-business'>
+                <h1>Use OneReturn for your business</h1>
                 <h3>
                     The average person has 1.75 email accounts, the average office worker receives 121 emails each day and, as of 2022, over 162 billion spam emails were sent everyday;
                     odds are: your customer's digital receipts are getting lost.
@@ -49,6 +37,15 @@ const Landing = () => {
                     Not only are OneReturn receipts searchable by any and all fields, they are formatted in an easy to read way and dynamic so customers can see live updates, such as a return, refund
                     or shipment status.
                 </h3>
+
+                <button className="main-trial-button"><a href='https://console.onereturn.com/merchantregistration'>Try OneReturn for personal use.</a></button>
+            </div>
+
+            <div className="pricing">
+                <h3>PRICING</h3>
+
+
+
             </div>
 
         </div>

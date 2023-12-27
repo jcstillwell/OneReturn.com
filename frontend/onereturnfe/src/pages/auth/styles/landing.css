@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
+  justify-content: center;
 }
 
 .main-trial-button {
@@ -23,15 +24,26 @@
   transition: all ease 0.3s;
 }
 
-.main-splash-text {
-  font-size: 20px;
+.main-container h3, h2{
+  font-family: 'Raleway', sans-serif;
+  color: white;
 }
 
-.main-container h1, h3{
+.main-container h1 {
+  padding: 50px;
+  font-size: 40px;
   font-family: 'Raleway', sans-serif;
   color: white;
 }
 
 .for-business {
-  padding-top: 400px;
+  padding-top: 70vh;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.pricing {
+  padding-top: 70vh;
+  text-align: center;
 }
