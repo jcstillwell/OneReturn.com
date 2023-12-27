@@ -76,6 +76,20 @@ class MerchantAccount(AbstractBaseUser):
     def __str__(self):
         return self.merchantID
 
+class UnverifiedMerchantAccount(models.Model):
+        businessName = models.CharField(max_length=100, default=None)
+        businessAddress = models.CharField(max_length=100, default=None)
+        businessType = models.CharField(max_length=100, default=None)
+        industry = models.CharField(max_length=100, default=None)
+        primaryContactName = models.CharField(max_length=100, default=None)
+        primaryPhoneNumber = models.CharField(max_length=100, default=None)
+        primaryEmailAddress = models.CharField(max_length=100, default=None)
+        numRegisters = models.CharField(max_length=100, default=None)
+        dateCreated = models.DateTimeField(default=None)
+        temporaryUserID = models.CharField(default=None, unique=True)
+        temporaryPassword = models.CharField(default=None, unique=True)
+        confirmationID = models.UUIDField(default=uuid.uuid4, unique=True)
+
 class Item(models.Model):
     name = models.CharField(max_length=100, default=None)
     parent = models.ForeignKey('invoice', on_delete=models.CASCADE, default=None)

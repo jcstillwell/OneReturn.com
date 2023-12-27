@@ -7,6 +7,8 @@ import './css/register.css';
 const MerchantRegister = () => {
 
     let navigate = useNavigate();
+    const [error, setError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
 
     const [formInfo, setFormInfo] = useState({
         businessName:'',
@@ -16,9 +18,38 @@ const MerchantRegister = () => {
         primaryContactName:'',
         primaryPhoneNumber:'',
         primaryEmailAddress:'',
-        numOfEmployees:'',
+        numRegisters:'',
 
     });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        try {
+            const response = await axios.post('https://onereturn.com/userapi/merchantRegLead', {
+                'businessName':formInfo.businessName,
+                'businessAddress':formInfo.businessAddress,
+                'businessType':formInfo.businessType,
+                'industry':formInfo.industry,
+                'primaryContactName':formInfo.primaryContactName,
+                'primaryPhoneNumber':formInfo.primaryPhoneNumber,
+                'primaryEmailAddress':formInfo.primaryEmailAddress,
+                'numRegisters':formInfo.numRegisters,
+            });
+
+            if (response.data.status === 'OK') {
+                navigate('/confirm/${response.data.confirmationID}');
+                setError(false);
+                setErrorMsg('');
+            } else {
+                setError(true);
+                setErrorMsg(response.data.message);
+            }
+        } catch (error) {
+            setError(true);
+            setErrorMsg(error.response.data.message);
+        }
+    }
 
     const handleInput = (event) => {
         const {name, value} = event.target;
@@ -31,7 +62,7 @@ const MerchantRegister = () => {
     return (
 
         <div className="merchant-reg-container">
-            <form className='merchant-reg-form'>
+            <form className='merchant-reg-form' onSubmit={handleSubmit}>
                 <p>Please fill out the required feilds below.</p>
                 <label htmlFor="businessName">Business Name</label>
                 <input name="businessName" value={formInfo.businessName} onChange={handleInput} id="businessName" type="text" placeholder="Example LLC" />
@@ -47,8 +78,10 @@ const MerchantRegister = () => {
                 <input name="primaryPhoneNumber" value={formInfo.primaryPhoneNumber} onChange={handleInput} id="primaryPhoneNumber" type="text" placeholder="555-555-5555" />
                 <label htmlFor="">Primary Email Address</label>
                 <input name="primaryEmailAddress" value={formInfo.primaryEmailAddress} onChange={handleInput} id="primaryEmailAddress" type="text" placeholder="filler@business.com" />
-                <label htmlFor="">Total Number of Employees</label>
-                <input name="numOfEmployees" value={formInfo.numOfEmployees} onChange={handleInput} id="numOfEmployees" type="text" placeholder="5, 10, 15, 20..." />
+                <label htmlFor="">Number of physical registers</label>
+                <h6 className="form-note">If your business operates using a web-based platform(Etsy, Shopify, Website, etc...) and does not use physical registers, just enter NA.</h6>
+                <input name="numRegisters" value={formInfo.numRegisters} onChange={handleInput} id="numRegisters" type="text" placeholder="5, 10, 15, 20..." />
+                <button className="submit-button" type="submit">Submit</button>
             </form>
             <button className='link-btn' onClick={() => navigate("/signin")}>Already have an account? Log in here.</button>
         </div>

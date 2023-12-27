@@ -50,3 +50,35 @@ def verifyEmail(source_email, to_email, password, verification_link):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
              server.login(source_email, password)
              server.send_message(msg)
+
+def merchantLeadEmail(source_email, to_email, password, confirmationID, merchantInfo, submitLink):
+     msg = EmailMessage()
+     msg['Subject'] = f'Information Lead From Potential Vendor({confirmationID})'
+     msg['From'] = source_email
+     msg['To'] = to_email
+
+     msg.set_content(f'You have received an lead from a potential vendor looking to use OneReturn. The confirmation number for this request is {confirmationID}')
+
+     html_content = f"""
+    <html>
+    <body>
+        <h1>{merchantInfo['name']} ({merchantInfo['type']}) is looking to use OneReturn for their business!</h1>
+        <p>A temporary account has been created for them under the id {confirmationID}. Please review this request and click confirm if you would like to move forward with the request.</p>
+        <p>Below is the information submitted by the potential client:</p>
+        <li>Business Name: {merchantInfo['businessName']}<li>
+        <li>Business Address: {merchantInfo['businessAddress']}<li>
+        <li>Business Type: {merchantInfo['businessType']}<li>
+        <li>Industry: {merchantInfo['industry']}<li>
+        <li>Primary Contact Name: {merchantInfo['primaryContactName']}<li>
+        <li>Primary Phone Number: {merchantInfo['primaryPhoneNumber']}<li>
+        <li>Primary Email Address: {merchantInfo['primaryEmailAddress']}<li>
+        <li>Number of Registers: {merchantInfo['numRegisters']}</li>
+
+        <a href="{submitLink}" style="background-color: #007BFF; color: white; padding: 14px 25px; text-align: center; text-decoration: none; display: inline-block;">Confirm</a>
+    </body>
+    </html>
+    """
+     msg.add_alternative(html_content, subtype='html')
+     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        server.login(source_email, password)
+        server.send_message(msg)

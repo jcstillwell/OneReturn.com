@@ -7,13 +7,13 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import status
-from .authenticate import authenticate_invoice, verifyEmail
+from .authenticate import *
 from django.utils import timezone
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 from django.db.models import Q, Count
 
-from core.models import Invoice, Item, AppUser, AppUserManager, UnverifiedUser, MerchantAccountManager, MerchantAccount
+from core.models import *
 from .serializers import *
 
 class GetShared(APIView):
@@ -178,15 +178,6 @@ class GetInvoice(APIView):
             })
 
         return Response({"invoices":invoice_list})
-    
-class GetMerchantViewInvoice(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        if request.data:
-            merchantID = request.data.get('merchantID')
-            merchantAPIKey = request.data.get('merchantAPIKey')
 
       
 class ChangeSettings(APIView):
@@ -246,27 +237,6 @@ class AuthenticateView(APIView):
                     return Response({"message":"user not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
             except AppUser.DoesNotExist:
                 return Response({"message":"email not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
-            
-class MerchantAuthenticateView(APIView):
-    def post(self, request):
-        if request.data:
-            merchantID = request.data.get('merchantID', None)
-            merchantAPIKey = request.data.get('merchantAPIKey', None)
-            merchantMasterPassword = request.data.get('merchantMasterPassword', None)
-            try:
-                merchant = MerchantAccount.objects.get(merchantID = merchantID)
-                auth = authenticate(request, merchantID=merchantID, password=merchantMasterPassword)
-                if auth is not None:
-                    token, created = token.objects.get_or_create(user=merchant)
-                    merchant_data = {'merchant-id':merchant.merchantID, 'merchant-api-key':merchant.merchantAPIKey}
-                    if merchant.merchantAPIKey != merchantAPIKey:
-                        return Response({'status':'error', 'message':'API key is either invalid or expired, please try again or contact customer support.'})
-                    else:
-                        return Response({'status':'OK', 'token':token.key, 'data':merchant_data}, status=status.HTTP_200_OK)
-                else:
-                    return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
-            except MerchantAccount.DoesNotExist:
-                return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
 
         
 class LogoutView(APIView):
@@ -295,3 +265,78 @@ class RegisterView(APIView):
         else:
             print(serialized_user.errors)
             return(Response({"error":"bad request"}))
+        
+
+#MERCHANT CLASSES:
+        
+class MerchantAuthenticateView(APIView):
+    def post(self, request):
+        if request.data:
+            merchantID = request.data.get('merchantID', None)
+            merchantAPIKey = request.data.get('merchantAPIKey', None)
+            merchantMasterPassword = request.data.get('merchantMasterPassword', None)
+            try:
+                merchant = MerchantAccount.objects.get(merchantID = merchantID)
+                auth = authenticate(request, merchantID=merchantID, password=merchantMasterPassword)
+                if auth is not None:
+                    token, created = token.objects.get_or_create(user=merchant)
+                    merchant_data = {'merchant-id':merchant.merchantID, 'merchant-api-key':merchant.merchantAPIKey}
+                    if merchant.merchantAPIKey != merchantAPIKey:
+                        return Response({'status':'error', 'message':'API key is either invalid or expired, please try again or contact customer support.'})
+                    else:
+                        return Response({'status':'OK', 'token':token.key, 'data':merchant_data}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
+            except MerchantAccount.DoesNotExist:
+                return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
+            
+class MerchantRegisterViewLead(APIView):
+
+    def post(self, request):
+        source_email = 'jcseagle21@gmail.com'
+        email_password = 'vcibcvsaaftekzpp'
+        if request.data:
+            businessName = request.data.get('businessName', None)
+            businessAddress = request.data.get('businessAddress', None)
+            businessType = request.data.get('businessType', None)
+            industry = request.data.get('industry', None)
+            primaryContactName = request.data.get('primaryContactName', None)
+            primaryPhoneNumber = request.data.get('primaryPhoneNumber', None)
+            primaryEmailAddress = request.data.get('primaryEmailAddress', None)
+            numRegisters = request.data.get('numRegisters', None)
+
+            merchantInfo = {
+                'businessName':businessName,
+                'businessAddress':businessAddress,
+                'businessType':businessType,
+                'industry':industry,
+                'primaryContactName':primaryContactName,
+                'primaryPhoneNumber':primaryPhoneNumber,
+                'primaryEmailAddress':primaryEmailAddress,
+                'numRegisters':numRegisters
+            }
+
+            tempUser = UnverifiedMerchantAccount.objects.create(
+                businessName = businessName,
+                businessAddress = businessAddress,
+                businessType = businessType,
+                industry = industry,
+                primaryContactName = primaryContactName,
+                primaryPhoneNumber = primaryPhoneNumber,
+                primaryEmailAddress = primaryEmailAddress,
+                numRegisters = numRegisters,
+                dateCreated = timezone.now(),
+                temporaryUserID = f'{businessName.strip(" ", "")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+                temporaryPassword = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            )
+            merchantLeadEmail(source_email, primaryEmailAddress, email_password, tempUser.confirmationID, merchantInfo, f"https://onereturn.com/userapi/confirmLead?token={tempUser.confirmationID}")
+            return Response({'status':'OK', 'message':f'Thank you! your information has been sent over for review and you can expect to hear back from us within the next 1-2 days, your confirmation ID is: {tempUser.confirmationID}'}, status=status.HTTP_200_OK)
+            
+class GetMerchantViewInvoice(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.data:
+            merchantID = request.data.get('merchantID')
+            merchantAPIKey = request.data.get('merchantAPIKey')
