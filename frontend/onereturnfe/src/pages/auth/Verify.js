@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 
-const Verify = () => {
+const Verify = async () => {
 
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -11,8 +11,7 @@ const Verify = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     try {
-        const response = axios.get('https://onereturn.com/userapi/verify?token=${token}');
-
+        const response = await axios.get('https://onereturn.com/userapi/verify?token=${token}');
         if(response.data.status === 'OK') {
             setIsVerified(true);
             setSuccessMsg(response.data.message);
