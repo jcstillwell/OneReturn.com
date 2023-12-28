@@ -43,7 +43,7 @@ const Landing = () => {
 
             <div className="pricing">
                 <h3>PRICING</h3>
-
+                <h2>Undetermined</h2>
 
 
             </div>
