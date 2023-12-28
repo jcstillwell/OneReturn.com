@@ -11,9 +11,7 @@ const Verify = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     try {
-        const response = axios.post('https://onereturn.com/userapi/verify/', {
-            'token':token
-        });
+        const response = axios.get('https://onereturn.com/userapi/verify?token=${token}');
 
         if(response.data.status === 'OK') {
             setIsVerified(true);
