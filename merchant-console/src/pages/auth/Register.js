@@ -12,6 +12,7 @@ const MerchantRegister = () => {
     const [errorMsg, setErrorMsg] = useState('');
     const [message, setMessage] = useState('');
     const [confirmed, setConfirmed] = useState(false);
+    const [confirmationID, setConfirmationID] = useState('');
 
     const [formInfo, setFormInfo] = useState({
         businessName:'',
@@ -45,6 +46,7 @@ const MerchantRegister = () => {
                 setErrorMsg('');
                 setConfirmed(true);
                 setMessage(response.data.message);
+                setConfirmationID(response.data.confirmationID);
             } else {
                 setError(true);
                 setErrorMsg(response.data.message);

@@ -38,7 +38,7 @@ const Landing = () => {
                     or shipment status.
                 </h3>
 
-                <button className="main-trial-button"><a href='https://console.onereturn.com/merchantregistration'>Try OneReturn for personal use.</a></button>
+                <button className="main-trial-button"><a href='https://console.onereturn.com/merchantregistration'>Try OneReturn for business.</a></button>
             </div>
 
             <div className="pricing">
