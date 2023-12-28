@@ -47,7 +47,7 @@ class Verify(APIView):
         if method == "CHECK":
             try:
                 query = AppUser.objects.get(email=email)
-                return Response({'status':'OK', 'message':f'Successfully verified {query.email}!', 'uuid':query.uuid}, status=status.HTTP_200_OK)
+                return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing in', 'uuid':query.uuid}, status=status.HTTP_200_OK)
             except AppUser.DoesNotExist:
                 return Response({'status':'ERROR', 'message':'User has not been verified yet.'})
         else:
@@ -83,7 +83,7 @@ class SendEmail(APIView):
                 tempUser = UnverifiedUser.objects.create(
                     email=to_email
                 )
-                verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/userapi/verify?token={tempUser.token}")
+                verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verify?token={tempUser.token}")
                 return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
                 
 
