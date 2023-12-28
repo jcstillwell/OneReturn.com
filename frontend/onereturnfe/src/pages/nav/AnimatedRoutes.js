@@ -1,17 +1,15 @@
 import React from 'react';
 import { Route, Redirect, Routes, useNavigate, useLocation} from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion'
-
-import { SidebarContext } from "../../context/SidebarContext.js";;
-
-import AppSettings, {UserSettings, ReceiptSettings} from '../app/Settings.js';
-import Login from '../auth/Login.js';
-import { Register, RegisterPreVerify } from '../auth/Register.js';
-import Wallet, {Shared} from '../app/Wallet.js';
-import Invoice from "../app/Invoice.js";
-import Landing from "../auth/Landing.js";
-import PrivateRoute from "../../PrivateRoute/index.js";
-import Verify from '../auth/Verify.js';
+import { SidebarContext } from "../../context/SidebarContext.js";
+import AppSettings, {UserSettings, ReceiptSettings} from '../app/Settings.js'
+import Login from '../auth/Login.js'
+import { Register, RegisterPreVerify } from '../auth/Register.js'
+import Wallet, {Shared} from '../app/Wallet.js'
+import Invoice from "../app/Invoice.js"
+import Landing from "../auth/Landing.js"
+import PrivateRoute from "../../PrivateRoute/index.js"
+import Verify from '../auth/Verify.js'
 
 
 

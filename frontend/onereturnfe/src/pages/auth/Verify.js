@@ -11,7 +11,7 @@ const Verify = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     try {
-        const response = axios.post('https://onereturn.com/userapi/verify/?token', {
+        const response = axios.post('https://onereturn.com/userapi/verify/', {
             'token':token
         });
 
@@ -49,7 +49,6 @@ const Verify = () => {
             </div>
         );
     }
-    
+}
 
-
-};
+export default Verify;
