@@ -66,7 +66,7 @@ const MerchantRegister = () => {
     };
 
     if(confirmed) {
-        <ConfimationPage confirmationID={confirmationID} message={message}/>
+        <ConfirmationPage confirmationID={confirmationID} message={message}/>
     } else {
 
         return (
