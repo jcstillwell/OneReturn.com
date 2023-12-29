@@ -326,7 +326,7 @@ class MerchantRegisterViewLead(APIView):
                 primaryEmailAddress = primaryEmailAddress,
                 numRegisters = numRegisters,
                 dateCreated = timezone.now(),
-                temporaryUserID = f'{businessName.strip(" ", "")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
+                temporaryUserID = f'{businessName.strip(" ")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
                 temporaryPassword = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
             )
             merchantLeadEmail(source_email, 'jcseagle21@gmail.com', email_password, tempUser.confirmationID, merchantInfo, f"https://onereturn.com/userapi/confirmLead?confirmationID={tempUser.confirmationID}")
