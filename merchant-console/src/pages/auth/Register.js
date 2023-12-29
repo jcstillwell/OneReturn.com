@@ -66,9 +66,10 @@ const MerchantRegister = () => {
     };
 
     if(confirmed) {
-        <ConfirmationPage confirmationID={confirmationID} message={message}/>
+        <div className="merchant-reg-container">
+            <ConfirmationPage confirmationID={confirmationID} message={message}/>
+        </div>
     } else {
-
         return (
             <div className="merchant-reg-container">
                 <form className='merchant-reg-form' onSubmit={handleSubmit}>

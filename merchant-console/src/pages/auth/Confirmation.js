@@ -1,10 +1,13 @@
 import React, {useState} from "react";
 
-export function ConfirmationPage({ confirmationID, confirmationMsg }) {
+const ConfirmationPage = ({ confirmationID, confirmationMsg }) => {
 
     return (
-        <div>
+        <div className="merchant-reg-container">
             <h1>{confirmationMsg}</h1>
+            <h2>{confirmationID}</h2>
         </div>
     );
 }
+
+export default ConfirmationPage;
