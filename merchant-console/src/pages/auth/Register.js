@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { ConfirmationPage } from "./Confirmation";
+import { ConfirmationPage } from "./ConfirmationPage";
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import './css/register.css';
