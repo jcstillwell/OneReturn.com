@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import ConfirmationPage from "./ConfirmationPage";
+import ConfirmationPage from "./ConfirmationPage.js";
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import './css/register.css';
@@ -66,9 +66,11 @@ const MerchantRegister = () => {
     };
 
     if(confirmed) {
-        <div className="merchant-reg-container">
-            <ConfirmationPage confirmationID={confirmationID} message={message}/>
-        </div>
+        return (
+            <div className="merchant-reg-container">
+                <ConfirmationPage confirmationID={confirmationID} message={message}/>
+            </div>
+        );
     } else {
         return (
             <div className="merchant-reg-container">
