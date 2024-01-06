@@ -15,7 +15,9 @@ const Verify = () => {
         setIsVisible(false);
         const verifyToken = async () => {
             try {
-                const response = await axios.get(('https://onereturn.com/userapi/verify?token=' + token + '/'))
+                //OK WE ARE FIXING THIS BS TODAY:
+                //NOTES: https://onereturn.com/userapi/authenticate/ takes us to api backend django page
+                const response = await axios.get(('https://onereturn.com/userapi/verify/'))
                 if (response.data.status === 'OK') {
                     setIsVerified(true);
                     setSuccessMsg(response.data.message);
