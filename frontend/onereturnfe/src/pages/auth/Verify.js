@@ -19,11 +19,15 @@ const Verify = () => {
                 if (response.data.status === 'OK') {
                     setIsVerified(true);
                     setSuccessMsg(response.data.message);
-                    console.log(response.data.message);
+                    console.log("success section, no axios error" + response.data.message);
+                    console.log("success msg:" + successMsg);
+                    console.log("Error msg:" + errorMsg);
                 } else {
                     setError(true);
                     setErrorMsg(response.data.message);
-                    console.log(response.data.message);
+                    console.log("else section, no axios error: " + response.data.message);
+                    console.log("Error msg:" + errorMsg);
+                    console.log("success msg:" + successMsg);
                 }
             } catch (error) {
                 console.error(error);
