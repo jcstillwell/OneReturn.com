@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./styles/landing.css"
 import { motion, scroll } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import ProgressWheel from "./ui/ProgressWheel";
 
 const Landing = () => {
 

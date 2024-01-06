@@ -3,19 +3,22 @@ import App from './App';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
+import { NavbarVisContextProvider } from './context/NavbarVisContext';
 import { SidebarProvider } from './context/SidebarContext';
 import reportWebVitals from './reportWebVitals';
-import "./app.css"
+import "./app.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <SidebarProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </SidebarProvider>
+      <NavbarVisContextProvider>
+        <SidebarProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </SidebarProvider>
+      </NavbarVisContextProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

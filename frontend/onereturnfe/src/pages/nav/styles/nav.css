@@ -1,5 +1,11 @@
+.nav-invis {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .nav {
-    background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+    background-image: linear-gradient(#013a63,#012a4a);
     height: 60px;
     width: 100%;
     display: flex;

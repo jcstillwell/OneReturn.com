@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NavbarVisContext } from "../../context/NavbarVisContext";
 
 const Verify = () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -8,20 +9,24 @@ const Verify = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const { isVisible, setIsVisible } = useContext(NavbarVisContext)
 
     useEffect(() => {
+        setIsVisible(false);
         const verifyToken = async () => {
             try {
                 const response = await axios.get(`https://onereturn.com/userapi/verify?token=${token}`);
                 if (response.data.status === 'OK') {
                     setIsVerified(true);
                     setSuccessMsg(response.data.message);
+                    console.log(response.data.message);
                 } else {
                     setError(true);
                     setErrorMsg(response.data.message);
+                    console.log(response.data.message);
                 }
             } catch (error) {
-                console.error(error); // Log the error
+                console.error(error);
                 setError(true);
                 setErrorMsg(error.response?.data?.message || "An error occurred");
             }

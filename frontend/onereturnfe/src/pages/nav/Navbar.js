@@ -2,15 +2,16 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.js";
 import Cookies from 'js-cookie';
-import { Button } from "./Button.js";
 import Dropdown from "../app/Dropdown.js";
 import './styles/nav.css';
+import { NavbarVisContext } from "../../context/NavbarVisContext.js";
 
 const Navbar = () => {
 
     //auth
     const { user, dispatch } = useContext(AuthContext);
     const isAuthenticated = !!user;
+    const { isVisible, setIsVisible } = useContext(NavbarVisContext)
 
     //util
     const [click, setClick] = useState(false);
@@ -21,7 +22,7 @@ const Navbar = () => {
     const toggleDropdown = () => setDropdown(!dropdown);
 
     return (
-        <nav className="nav">
+        <nav className={isVisible ? "nav":"nav-invis"}>
             <div className="navbar-logo">
                 <h3>OneReturn</h3>
             </div>
@@ -54,7 +55,9 @@ const Navbar = () => {
                     <>
                         <ul className='nav-menu-right'>
                             <li className="nav-item">
-                                <Button />
+                                <Link to='/wallet'>
+                                    <button className="btn">Dashboard</button>
+                                </Link>
                             </li>
                             <li className="nav-item">
                                 <span className="nav-links" onClick={toggleDropdown}><i className='fa-solid fa-bars'/></span>
