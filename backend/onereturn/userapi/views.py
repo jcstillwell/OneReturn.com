@@ -39,18 +39,17 @@ class GetShared(APIView):
         return Response({"invoices":invoice_list})
     
 class Verify(APIView):
-    def get(self, request):
-        token = request.GET.get('token')
-        email = request.GET.get('email')
-        method = request.GET.get('method')
 
-        if method == "CHECK":
-            try:
+    def get(self, request):
+        email = request.GET.get('email')
+        try:
                 query = AppUser.objects.get(email=email)
                 return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing in', 'uuid':query.uuid}, status=status.HTTP_200_OK)
-            except AppUser.DoesNotExist:
-                return Response({'status':'ERROR', 'message':'User has not been verified yet.'})
-        else:
+        except AppUser.DoesNotExist:
+                return Response({'status':'ERROR', 'message':'User has not been verified yet.'}) 
+    def post(self, request):
+        if request.data:
+            token = request.data.get('token', None)
             if not token:
                 return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again'})
             else:
@@ -67,7 +66,9 @@ class Verify(APIView):
                         return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again'})
                     return Response({'status':'OK', 'message':f'the email address {verified_user.email} has been verified'})
                 except UnverifiedUser.DoesNotExist:
-                    return Response({'status':'ERROR', 'message':'Error verifying user, please try again later.'})    
+                    return Response({'status':'ERROR', 'message':'Error verifying user, please try again later.'})
+        else:
+            return Response({'status':'ERROR', 'message':'No token received from client, please reload and try again.'})
 
     
 class SendEmail(APIView):

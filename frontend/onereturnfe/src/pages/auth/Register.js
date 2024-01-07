@@ -21,8 +21,6 @@ const RegisterPreVerify = (props) =>
         if (confirmClicked) {
             axios.get('https://onereturn.com/userapi/verify/', {
                 params: {
-                    'token': 'null',
-                    'method': 'CHECK',
                     'email': email
                 }
             })
