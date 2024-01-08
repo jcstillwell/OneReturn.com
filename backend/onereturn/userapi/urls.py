@@ -13,5 +13,5 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('changeSettings/', views.ChangeSettings.as_view(), name='changesettings'),
-    path('merchantRegLead', views.MerchantRegisterViewLead.as_view(), name='leadsubmission')
+    path('merchantRegLead/', views.MerchantRegisterViewLead.as_view(), name='leadsubmission')
 ]
