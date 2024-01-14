@@ -29,7 +29,7 @@ const MerchantRegister = () => {
         e.preventDefault();
         
         try {
-            const response = await axios.post('https://onereturn.com/userapi/merchantRegLead', {
+            const response = await axios.post('https://onereturn.com/userapi/merchantRegLead/', {
                 'businessName':formInfo.businessName,
                 'businessAddress':formInfo.businessAddress,
                 'businessType':formInfo.businessType,
