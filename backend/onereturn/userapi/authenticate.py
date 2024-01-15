@@ -15,9 +15,13 @@ twilio_auth_token = '90db36cb2a9f631d3aa901120b0f9d09'
 client = Client(twilio_sid, twilio_auth_token)
 
 def incrementAPIKeyUsage(api_key):
-     apiKeyInstance = APIKey.objects.get(key=api_key)
-     apiKeyInstance.usageThisMonth = F('usageThisMonth') + 1
-     apiKeyInstance.save()
+    try:
+        apiKeyInstance = APIKey.objects.get(key=api_key)
+        apiKeyInstance.usageThisMonth = F('usageThisMonth') + 1
+        apiKeyInstance.save()
+        return(f'Incremented API Key: {apiKeyInstance.key} owned by {apiKeyInstance.owner.merchantID}, current usage for this month is {apiKeyInstance.usageThisMonth}')
+    except APIKey.DoesNotExist:
+         return('API Key not found, please contact support at support@onereturn.com')
 
 def verifyPhoneNumber(phone_number):
     verification_code = random.randit(1000, 9999)

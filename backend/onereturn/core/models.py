@@ -67,7 +67,6 @@ class AppUser(AbstractBaseUser):
 class MerchantAccount(AbstractBaseUser):
     merchantID = models.CharField(max_length=100, default=None)
     merchantMasterPassword = models.CharField(max_length=100, default=None)
-    merchantAPIKey = models.CharField(max_length=255, default=None)
     
     USERNAME_FIELD = 'merchantID'
 
@@ -127,6 +126,7 @@ class APIKey(models.Model):
     key = models.CharField(max_length=255, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     usageThisMonth = models.CharField(max_length=255, default=None)
+    owner = models.ForeignKey('MerchantAccount', default=None, on_delete=models.CASCADE)
 
 class APIKeyAuthentication():
     def authenticate(self, request):
