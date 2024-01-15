@@ -2,6 +2,8 @@ import string, secrets, os, smtplib
 from email.message import EmailMessage
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
+from django.db.models import F
+from core.models import APIKey
 from rest_framework.response import Response
 import twilio
 from twilio.rest import Client
@@ -12,8 +14,10 @@ twilio_sid = 'AC72e28bc17a6bb1d383f24d7527e29c55'
 twilio_auth_token = '90db36cb2a9f631d3aa901120b0f9d09'
 client = Client(twilio_sid, twilio_auth_token)
 
-def authenticate_invoice():
-    pass
+def incrementAPIKeyUsage(api_key):
+     apiKeyInstance = APIKey.objects.get(key=api_key)
+     apiKeyInstance.usageThisMonth = F('usageThisMonth') + 1
+     apiKeyInstance.save()
 
 def verifyPhoneNumber(phone_number):
     verification_code = random.randit(1000, 9999)

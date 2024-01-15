@@ -22,7 +22,6 @@ const MerchantRegister = () => {
         primaryPhoneNumber:'',
         primaryEmailAddress:'',
         numRegisters:'',
-
     });
 
     const handleSubmit = async (e) => {

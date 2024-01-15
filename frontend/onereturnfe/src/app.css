@@ -18,10 +18,14 @@ body {
 
 .app-content-dashboard {
   display: flex;
-  margin-left: 150px;
-  background-color: white;
+  position: absolute;
+  left: 200px;
+  top: 60px;
+  background-color: rgb(79, 248, 0);
   justify-content: center;
   align-items: center;
+  width: calc(100% - 200px);
+  height: calc(100% - 60px);
 }
 
 .app-content-other {

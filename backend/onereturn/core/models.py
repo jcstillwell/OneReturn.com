@@ -126,6 +126,7 @@ class UnverifiedUser(models.Model):
 class APIKey(models.Model):
     key = models.CharField(max_length=255, unique=True)
     created = models.DateTimeField(auto_now_add=True)
+    usageThisMonth = models.CharField(max_length=255, default=None)
 
 class APIKeyAuthentication():
     def authenticate(self, request):

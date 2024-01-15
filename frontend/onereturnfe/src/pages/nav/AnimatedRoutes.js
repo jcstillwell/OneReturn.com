@@ -5,7 +5,7 @@ import { SidebarContext } from "../../context/SidebarContext.js";
 import AppSettings, {UserSettings, ReceiptSettings} from '../app/Settings.js'
 import Login from '../auth/Login.js'
 import { Register, RegisterPreVerify } from '../auth/Register.js'
-import Wallet, {Shared} from '../app/Wallet.js'
+import Wallet from '../app/Wallet.js'
 import Invoice from "../app/Invoice.js"
 import Landing from "../auth/Landing.js"
 import PrivateRoute from "../../PrivateRoute/index.js"
@@ -27,7 +27,6 @@ function AnimatedRoutes() {
                 <Route path="/verify" element={<Verify/>}/>
                 <Route path="/home" element={<Landing/>}/>
                 <Route path="/wallet" element={<PrivateRoute><Wallet/></PrivateRoute> } />
-                <Route path="/shared" element={<PrivateRoute><Shared/></PrivateRoute> } />
                 <Route path="/invoices/:invoiceID" element={<PrivateRoute><Invoice/></PrivateRoute>} />
                 <Route path="/settings" element={<PrivateRoute><AppSettings/></PrivateRoute> } />
                 <Route path="/settings/user" element={<PrivateRoute><UserSettings/></PrivateRoute> } />

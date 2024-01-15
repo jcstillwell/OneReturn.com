@@ -32,7 +32,6 @@ const Searchbar = ({onSearch}) => {
     return (
         <div className="search-field-container">
             <input className="search-field" label="Search..." onChange={handleChange} placeholder='Search...'/>
-            <i className="filter" class="fa-solid fa-sliders"></i>
         </div>
     )
 

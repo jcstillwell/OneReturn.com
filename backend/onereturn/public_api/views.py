@@ -18,9 +18,14 @@ from core.models import Invoice, Item, AppUser, AppUserManager, UnverifiedUser
 
 class CreateInvoice(APIView):
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         invoice_data = request.data.get("invoice", None)
         item_data = request.data.get("items", [])
+        api_key = request.data.get('merchantAPIKey', None)
+
+        #making function here for the public api that takes provided api key, checks validity, attempts to create invoice and increments usage records.
 
         if invoice_data:
             serialized_invoice = InvoiceSerializer(data=invoice_data)
