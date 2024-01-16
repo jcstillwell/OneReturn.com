@@ -19,7 +19,7 @@ const RegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('https://onereturn.com/userapi/verify/', {
+            axios.get('https://onereturn.com/userapi/verifymerchant/', {
                 params: {
                     'email': email
                 }
@@ -49,6 +49,7 @@ const RegisterPreVerify = (props) =>
         try {
             const response = await axios.post('https://onereturn.com/userapi/sendEmail/', {
                 'email':email,
+                'method':'merchant',
             });
             console.log(response.data);
         } catch (error) {

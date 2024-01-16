@@ -67,6 +67,17 @@ class AppUser(AbstractBaseUser):
 class MerchantAccount(AbstractBaseUser):
     merchantID = models.CharField(max_length=100, default=None)
     merchantMasterPassword = models.CharField(max_length=100, default=None)
+    businessName = models.CharField(max_length=100, default=None)
+    businessAddress = models.CharField(max_length=100, default=None)
+    businessType = models.CharField(max_length=100, default=None)
+    industry = models.CharField(max_length=100, default=None)
+    primaryContactName = models.CharField(max_length=100, default=None)
+    primaryPhoneNumber = models.CharField(max_length=100, default=None)
+    primaryEmailAddress = models.CharField(max_length=100, default=None)
+    numRegisters = models.CharField(max_length=100, default=None)
+    dateCreated = models.DateTimeField(default=None)
+    temporaryUserID = models.CharField(default=None, unique=True)
+    temporaryPassword = models.CharField(default=None, unique=True)
     
     USERNAME_FIELD = 'merchantID'
 
@@ -76,18 +87,8 @@ class MerchantAccount(AbstractBaseUser):
         return self.merchantID
 
 class UnverifiedMerchantAccount(models.Model):
-        businessName = models.CharField(max_length=100, default=None)
-        businessAddress = models.CharField(max_length=100, default=None)
-        businessType = models.CharField(max_length=100, default=None)
-        industry = models.CharField(max_length=100, default=None)
-        primaryContactName = models.CharField(max_length=100, default=None)
-        primaryPhoneNumber = models.CharField(max_length=100, default=None)
-        primaryEmailAddress = models.CharField(max_length=100, default=None)
-        numRegisters = models.CharField(max_length=100, default=None)
-        dateCreated = models.DateTimeField(default=None)
-        temporaryUserID = models.CharField(default=None, unique=True)
-        temporaryPassword = models.CharField(default=None, unique=True)
-        confirmationID = models.UUIDField(default=uuid.uuid4, unique=True)
+    primaryEmailAddress = models.CharField(max_length=100, default=None)
+    token = models.UUIDField(default=uuid.uuid4, unique=True)
 
 class Item(models.Model):
     name = models.CharField(max_length=100, default=None)

@@ -1,0 +1,56 @@
+.register-pre-verify {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+.register-pre-verify input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    color: #000000;
+    outline: none;
+}
+
+.submit-button {
+    padding: 5px;
+    padding-left: 10px; 
+    padding-right: 10px;
+    background-color: #cfcfcf;
+}
+
+.verification-user-input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.register-pre-verify h4,
+.register-pre-verify p,
+.register-pre-verify label,
+.register-pre-verify input,
+.register-pre-verify button {
+    margin: 10px 0;
+}
+
+.spinner {
+    height: 15px;
+    width: 15px;
+    border: 1px solid black;
+    border-color: white transparent white transparent;
+    border-radius: 50%;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 5px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg)
+    }
+  }

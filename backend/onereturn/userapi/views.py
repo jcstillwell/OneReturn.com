@@ -76,16 +76,30 @@ class SendEmail(APIView):
         if request.data:
             source_email = 'jcseagle21@gmail.com'
             email_password = 'vcibcvsaaftekzpp'
-            to_email = request.data.get('email', None)
-            query = AppUser.objects.filter(email=to_email)
-            if len(query) > 0:
-                return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
+            method = request.data.get('method', None)
+
+            if method == 'merchant':
+                to_email = request.data.get('email', None)
+                query = MerchantAccount.objects.filter(email=to_email)
+                if len(query) > 0:
+                    return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
+                else:
+                    tempMerchantAccount = UnverifiedMerchantAccount.objects.create(
+                        email=to_email
+                    )
+                    verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
+                    return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
             else:
-                tempUser = UnverifiedUser.objects.create(
-                    email=to_email
-                )
-                verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verify?token={tempUser.token}")
-                return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
+                to_email = request.data.get('email', None)
+                query = AppUser.objects.filter(email=to_email)
+                if len(query) > 0:
+                    return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
+                else:
+                    tempUser = UnverifiedUser.objects.create(
+                        email=to_email
+                    )
+                    verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verify?token={tempUser.token}")
+                    return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
                 
 
     
@@ -291,13 +305,14 @@ class MerchantAuthenticateView(APIView):
             except MerchantAccount.DoesNotExist:
                 return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
             
-class MerchantRegisterViewLead(APIView):
+class MerchantRegisterView(APIView):
 
     def post(self, request):
         source_email = 'jcseagle21@gmail.com'
         email_password = 'vcibcvsaaftekzpp'
         if request.data:
             businessName = request.data.get('businessName', None)
+            masterPassword = request.data.get('masterPassword', None)
             businessAddress = request.data.get('businessAddress', None)
             businessType = request.data.get('businessType', None)
             industry = request.data.get('industry', None)
@@ -308,12 +323,12 @@ class MerchantRegisterViewLead(APIView):
 
             merchantInfo = {
                 'businessName':businessName,
+                'masterPassword':masterPassword,
                 'businessAddress':businessAddress,
                 'businessType':businessType,
                 'industry':industry,
                 'primaryContactName':primaryContactName,
                 'primaryPhoneNumber':primaryPhoneNumber,
-                'primaryEmailAddress':primaryEmailAddress,
                 'numRegisters':numRegisters
             }
 
@@ -324,14 +339,43 @@ class MerchantRegisterViewLead(APIView):
                 industry = industry,
                 primaryContactName = primaryContactName,
                 primaryPhoneNumber = primaryPhoneNumber,
-                primaryEmailAddress = primaryEmailAddress,
                 numRegisters = numRegisters,
                 dateCreated = timezone.now(),
                 temporaryUserID = f'{businessName.strip(" ")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
                 temporaryPassword = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
             )
-            merchantLeadEmail(source_email, 'jcseagle21@gmail.com', email_password, tempUser.confirmationID, merchantInfo, f"https://onereturn.com/userapi/confirmLead?confirmationID={tempUser.confirmationID}")
-            return Response({'status':'OK', 'message':f'Thank you! your information has been sent over for review and you can expect to hear back from us within the next 1-2 days, your confirmation ID is: {tempUser.confirmationID}', 'confirmationID':tempUser.confirmationID}, status=status.HTTP_200_OK)
+
+class VerifyMerchant(APIView):
+
+    def get(self, request):
+        email = request.GET.get('primaryEmail')
+        try:
+                query = MerchantAccount.objects.get(email=email)
+                return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing up', 'uuid':query.uuid}, status=status.HTTP_200_OK)
+        except MerchantAccount.DoesNotExist:
+                return Response({'status':'ERROR', 'message':'Account has not been verified yet.'}) 
+    def post(self, request):
+        if request.data:
+            token = request.data.get('token', None)
+            if not token:
+                return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again'})
+            else:
+                try:
+                    try:
+                        user = UnverifiedMerchantAccount.objects.get(token=token)
+                        UnverifiedMerchantAccount.objects.filter(email = user.email).exclude(pk=user.pk).delete()
+                        verified_account = MerchantAccount.objects.create_user(
+                            uuid=token,
+                            email=user.email,
+                            emailVerified=True,
+                        )
+                    except ValidationError:
+                        return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again'})
+                    return Response({'status':'OK', 'message':f'the email address {verified_account.email} has been verified'})
+                except UnverifiedUser.DoesNotExist:
+                    return Response({'status':'ERROR', 'message':'Error verifying user, please try again later.'})
+        else:
+            return Response({'status':'ERROR', 'message':'No token received from client, please reload and try again.'})
             
 class GetMerchantViewInvoice(APIView):
     authentication_classes = [TokenAuthentication]
