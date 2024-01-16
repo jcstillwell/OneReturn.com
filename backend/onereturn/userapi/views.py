@@ -333,7 +333,7 @@ class MerchantRegisterView(APIView):
 class VerifyMerchant(APIView):
 
     def get(self, request):
-        email = request.GET.get('primaryEmail')
+        email = request.GET.get('email')
         try:
                 query = MerchantAccount.objects.get(primaryEmailAddress=email)
                 return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing up', 'uuid':query.uuid}, status=status.HTTP_200_OK)
