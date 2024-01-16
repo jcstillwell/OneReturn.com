@@ -314,7 +314,7 @@ class MerchantRegisterView(APIView):
             try:
                 account = MerchantAccount.objects.get(uuid=serialized_account.data['uuid'])
                 account.merchantID = serialized_account.data['merchantID']
-                account.merchantMasterPassword = serialized_account.data['merchantMasterPassword']
+                account.set_password(serialized_account.data['merchantMasterPassword'])
                 account.businessName = serialized_account.data['businessName']
                 account.businessAddress = serialized_account.data['businessAddress']
                 account.businessType = serialized_account.data['businessType']

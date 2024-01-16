@@ -37,7 +37,6 @@ class MerchantAccountManager(BaseUserManager):
         def __str__(self):
             return self.email
         
-        MerchantAccount.set_password(merchantMasterPassword)
         MerchantAccount.save(using=self._db)
         return MerchantAccount
 
