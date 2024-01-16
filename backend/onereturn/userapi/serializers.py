@@ -20,6 +20,18 @@ class UserSerializer(serializers.ModelSerializer):
         model = AppUser
         fields = ['first_name', 'last_name', 'password', 'uuid']
 
+class MerchantAccountSerializer(serializers.ModelSerializer):
+    merchantID = serializers.CharField(max_length=100, default=None)
+    merchantMasterPassword = serializers.CharField(max_length=100, default=None)
+    businessName = serializers.CharField(max_length=100, default=None)
+    businessAddress = serializers.CharField(max_length=100, default=None)
+    businessType = serializers.CharField(max_length=100, default=None)
+    industry = serializers.CharField(max_length=100, default=None)
+    primaryContactName = serializers.CharField(max_length=100, default=None)
+    primaryPhoneNumber = serializers.CharField(max_length=100, default=None)
+    primaryEmailAddress = serializers.CharField(max_length=100, default=None)
+    numRegisters = serializers.CharField(max_length=100, default=None)  
+
 class InvoiceSerializer(serializers.ModelSerializer):
 
     sharedWith = UserSerializer(many=True, read_only=True)

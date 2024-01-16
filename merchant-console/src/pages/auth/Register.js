@@ -122,6 +122,7 @@ const MerchantRegister = () => {
         
         try {
             const response = await axios.post('https://onereturn.com/userapi/merchantReg/', {
+                'uuid':Cookies.get('active-uuid'),
                 'businessName':formInfo.businessName,
                 'businessAddress':formInfo.businessAddress,
                 'businessType':formInfo.businessType,

@@ -27,12 +27,13 @@ class AppUserManager(BaseUserManager):
         return user
     
 class MerchantAccountManager(BaseUserManager):
-    def create_user(self, merchantID, merchantMasterPassword, merchantAPIKey):
+    def create_user(self, uuid, merchantID=None, merchantMasterPassword=None, merchantAPIKey=None):
 
         if not merchantID == True:
             raise ValueError('How could this have even happened.')
         
         MerchantAccount = self.model(
+            uuid = uuid,
             merchantID = merchantID, 
             merchantMasterPassword = merchantMasterPassword, 
             merchantAPIKey = merchantAPIKey,

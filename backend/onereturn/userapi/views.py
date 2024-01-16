@@ -43,9 +43,9 @@ class Verify(APIView):
     def get(self, request):
         email = request.GET.get('email')
         try:
-                query = Appaccount.objects.get(email=email)
+                query = AppUser.objects.get(email=email)
                 return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing in', 'uuid':query.uuid}, status=status.HTTP_200_OK)
-        except Appaccount.DoesNotExist:
+        except AppUser.DoesNotExist:
                 return Response({'status':'ERROR', 'message':'account has not been verified yet.'}) 
     def post(self, request):
         if request.data:
@@ -55,9 +55,9 @@ class Verify(APIView):
             else:
                 try:
                     try:
-                        account = Unverifiedaccount.objects.get(token=token)
-                        Unverifiedaccount.objects.filter(email = account.email).exclude(pk=account.pk).delete()
-                        verified_account = Appaccount.objects.create_account(
+                        account = UnverifiedUser.objects.get(token=token)
+                        UnverifiedUser.objects.filter(email = account.email).exclude(pk=account.pk).delete()
+                        verified_account = AppUser.objects.create_account(
                             uuid=token,
                             email=account.email,
                             emailVerified=True,
@@ -65,7 +65,7 @@ class Verify(APIView):
                     except ValidationError:
                         return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again'})
                     return Response({'status':'OK', 'message':f'the email address {verified_account.email} has been verified'})
-                except Unverifiedaccount.DoesNotExist:
+                except UnverifiedUser.DoesNotExist:
                     return Response({'status':'ERROR', 'message':'Error verifying account, please try again later.'})
         else:
             return Response({'status':'ERROR', 'message':'No token received from client, please reload and try again.'})
@@ -90,11 +90,11 @@ class SendEmail(APIView):
                     verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp account {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
             else:
-                query = Appaccount.objects.filter(email=to_email)
+                query = AppUser.objects.filter(email=to_email)
                 if len(query) > 0:
                     return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
-                    tempaccount = Unverifiedaccount.objects.create(
+                    tempaccount = UnverifiedUser.objects.create(
                         email=to_email
                     )
                     verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verify?token={tempaccount.token}")
@@ -134,7 +134,7 @@ class EditInvoice(APIView):
             elif action == 'SHARE':
                 try:
                     invoice = Invoice.objects.get(Q(recipientID = recipientID) & Q(invoiceID = invoiceID))
-                    sharedaccount = Appaccount.objects.get(email = sharedWith)
+                    sharedaccount = AppUser.objects.get(email = sharedWith)
                     invoice.sharedWith.add(sharedaccount)
                     invoice.transactionHistory.append(f'Receipt shared with {sharedaccount.email} at {timezone.now()}')
                     print(invoice.transactionHistory)
@@ -144,7 +144,7 @@ class EditInvoice(APIView):
                     return Response({'OK':'Updated invoice and account'}, status=status.HTTP_200_OK)
                 except Invoice.DoesNotExist:
                     return Response({'ERROR':'No invoice matches query'}, status=status.HTTP_404_NOT_FOUND)
-                except Appaccount.DoesNotExist:
+                except AppUser.DoesNotExist:
                     return Response({'ERROR':'account not found'}, status=status.HTTP_404_NOT_FOUND)
                 
             elif action == 'RETURN':
@@ -155,7 +155,7 @@ class EditInvoice(APIView):
                     if not item.returned:
                         item.returned = True
                         item.returnedBy = returner
-                        invoice.transactionHistory.append(f'Line item {item.name} returned by {returner}({Appaccount.objects.get(uuid=returner)}) at {timezone.now()}')
+                        invoice.transactionHistory.append(f'Line item {item.name} returned by {returner}({AppUser.objects.get(uuid=returner)}) at {timezone.now()}')
                         print(invoice.transactionHistory)
                         invoice.save()
                         item.save()
@@ -241,7 +241,7 @@ class AuthenticateView(APIView):
             email = request.data.get('email', None)
             password = request.data.get('password', None)
             try:
-                account = Appaccount.objects.get(email = email)
+                account = AppUser.objects.get(email = email)
                 auth = authenticate(request, email=email, password=password)
                 if auth is not None:
                     token, created = Token.objects.get_or_create(account=account)
@@ -249,7 +249,7 @@ class AuthenticateView(APIView):
                     return Response({"status": "OK", "token" : token.key, "data":account_data})
                 else: 
                     return Response({"message":"account not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
-            except Appaccount.DoesNotExist:
+            except AppUser.DoesNotExist:
                 return Response({"message":"email not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
 
         
@@ -265,10 +265,10 @@ class RegisterView(APIView):
     def post(self, request):
         if request.data:
             print(request.data)
-            serialized_account = accountSerializer(data=request.data)
+            serialized_account = UserSerializer(data=request.data)
         if serialized_account.is_valid():
             try:
-                account = Appaccount.objects.get(uuid=serialized_account.data['uuid'])
+                account = AppUser.objects.get(uuid=serialized_account.data['uuid'])
                 account.first_name = serialized_account.data['first_name']
                 account.last_name = serialized_account.data['last_name']
                 account.set_password(serialized_account.data['password'])
@@ -307,28 +307,28 @@ class MerchantAuthenticateView(APIView):
 class MerchantRegisterView(APIView):
 
     def post(self, request):
-        source_email = 'jcseagle21@gmail.com'
-        email_password = 'vcibcvsaaftekzpp'
-        businessName = request.data.get('businessName', None)
-        masterPassword = request.data.get('masterPassword', None)
-        businessAddress = request.data.get('businessAddress', None)
-        businessType = request.data.get('businessType', None)
-        industry = request.data.get('industry', None)
-        primaryContactName = request.data.get('primaryContactName', None)
-        primaryPhoneNumber = request.data.get('primaryPhoneNumber', None)
-        numRegisters = request.data.get('numRegisters', None)
-
-        account = MerchantAccount.objects.create(
-            businessName = businessName,
-            masterPassword = masterPassword,
-            businessAddress = businessAddress,
-            businessType = businessType,
-            industry = industry,
-            primaryContactName = primaryContactName,
-            primaryPhoneNumber = primaryPhoneNumber,
-            numRegisters = numRegisters,
-        )
-        account.save()
+        if request.data:
+            print(request.data)
+            serialized_account = MerchantAccountSerializer(data=request.data)
+        if serialized_account.is_valid():
+            try:
+                account = MerchantAccount.objects.get(uuid=serialized_account.data['uuid'])
+                account.merchantID = serialized_account.data['merchantID']
+                account.merchantMasterPassword = serialized_account.data['merchantMasterPassword']
+                account.businessName = serialized_account.data['businessName']
+                account.businessAddress = serialized_account.data['businessAddress']
+                account.businessType = serialized_account.data['businessType']
+                account.industry = serialized_account.data['industry']
+                account.primaryContactName = serialized_account.data['primaryContactName']
+                account.primaryPhoneNumber = serialized_account.data['primaryPhoneNumber']
+                account.numRegisters = serialized_account.data['numRegisters']
+                account.save()
+            except IntegrityError:
+                return(Response({"status":"error",'type':'Integrity Error', "message":"Email already is in use."}, status=status.HTTP_401_UNAUTHORIZED))
+            return(Response({"success":f"created account {account.uuid}"}))
+        else:
+            print(serialized_account.errors)
+            return(Response({"error":"bad request"}))
 
 class VerifyMerchant(APIView):
 
