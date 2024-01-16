@@ -352,7 +352,6 @@ class VerifyMerchant(APIView):
                         verified_account = MerchantAccount.objects.create_user(
                             uuid=token,
                             primaryEmailAddress=account.email,
-                            emailVerified=True,
                         )
                     except ValidationError:
                         return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again.'})
