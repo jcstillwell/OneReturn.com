@@ -80,7 +80,7 @@ class SendEmail(APIView):
             to_email = request.data.get('email', None)
 
             if method == 'merchant':
-                query = MerchantAccount.objects.filter(primaryEmail=to_email)
+                query = MerchantAccount.objects.filter(primaryEmailAddress=to_email)
                 if len(query) > 0:
                     return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
