@@ -8,7 +8,6 @@ const Verify = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
-    const { isVisible, setIsVisible } = useContext(NavbarVisContext)
 
     useEffect(() => {
         setIsVisible(false);
