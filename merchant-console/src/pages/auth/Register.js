@@ -46,7 +46,8 @@ const MerchantRegisterPreVerify = (props) =>
         checkVerification();
         try {
             const response = await axios.post('https://onereturn.com/userapi/sendEmail/', {
-                'email':email
+                'email':email,
+                'method':'merchant'
             });
             console.log(response.data);
         } catch (error) {
