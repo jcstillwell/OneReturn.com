@@ -349,7 +349,7 @@ class VerifyMerchant(APIView):
                     try:
                         account = UnverifiedMerchantAccount.objects.get(token=token)
                         UnverifiedMerchantAccount.objects.filter(email = account.email).exclude(pk=account.pk).delete()
-                        verified_account = MerchantAccount.objects.create_account(
+                        verified_account = MerchantAccount.objects.create_user(
                             uuid=token,
                             primaryEmailAddress=account.email,
                             emailVerified=True,
