@@ -41,6 +41,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 85%;
 }
 
 .for-business h1 {
@@ -52,4 +53,5 @@
 .pricing {
   padding-top: 70vh;
   text-align: center;
+  width: 85%;
 }
