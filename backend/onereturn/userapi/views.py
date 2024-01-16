@@ -57,7 +57,7 @@ class Verify(APIView):
                     try:
                         account = UnverifiedUser.objects.get(token=token)
                         UnverifiedUser.objects.filter(email = account.email).exclude(pk=account.pk).delete()
-                        verified_account = AppUser.objects.create_account(
+                        verified_account = AppUser.objects.create_user(
                             uuid=token,
                             email=account.email,
                             emailVerified=True,
