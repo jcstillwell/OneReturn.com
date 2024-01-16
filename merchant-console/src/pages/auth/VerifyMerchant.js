@@ -10,7 +10,6 @@ const Verify = () => {
     const [errorMsg, setErrorMsg] = useState('');
 
     useEffect(() => {
-        setIsVisible(false);
         const verifyToken = async () => {
             try {
                 const response = await axios.post('https://onereturn.com/userapi/verifymerchant/', {
