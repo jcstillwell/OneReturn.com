@@ -84,7 +84,7 @@ class MerchantAccount(AbstractBaseUser):
         return self.merchantID
 
 class UnverifiedMerchantAccount(models.Model):
-    primaryEmailAddress = models.CharField(max_length=100, default=None)
+    email = models.CharField(max_length=100, default=None)
     token = models.UUIDField(default=uuid.uuid4, unique=True)
 
 class Item(models.Model):

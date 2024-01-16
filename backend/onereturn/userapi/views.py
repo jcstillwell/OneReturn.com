@@ -77,10 +77,10 @@ class SendEmail(APIView):
             source_email = 'jcseagle21@gmail.com'
             email_password = 'vcibcvsaaftekzpp'
             method = request.data.get('method', None)
+            to_email = request.data.get('email', None)
 
             if method == 'merchant':
-                to_email = request.data.get('email', None)
-                query = MerchantAccount.objects.filter(email=to_email)
+                query = MerchantAccount.objects.filter(primaryEmail=to_email)
                 if len(query) > 0:
                     return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
@@ -90,7 +90,6 @@ class SendEmail(APIView):
                     verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempUser.token}'}, status=status.HTTP_200_OK)
             else:
-                to_email = request.data.get('email', None)
                 query = AppUser.objects.filter(email=to_email)
                 if len(query) > 0:
                     return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
