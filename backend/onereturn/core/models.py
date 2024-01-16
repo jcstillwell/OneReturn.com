@@ -28,9 +28,6 @@ class AppUserManager(BaseUserManager):
     
 class MerchantAccountManager(BaseUserManager):
     def create_user(self, uuid, primaryEmailAddress):
-
-        if not merchantID == True:
-            raise ValueError('How could this have even happened.')
         
         MerchantAccount = self.model(
             uuid = uuid,
