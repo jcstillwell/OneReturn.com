@@ -355,7 +355,7 @@ class VerifyMerchant(APIView):
                         )
                     except ValidationError:
                         return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again.'})
-                    return Response({'status':'OK', 'message':f'the email address {verified_account.email} has been verified.'})
+                    return Response({'status':'OK', 'message':f'the email address {verified_account.primaryEmailAddress} has been verified.'})
                 except UnverifiedMerchantAccount.DoesNotExist:
                     return Response({'status':'ERROR', 'message':'Error verifying account, please try again later.'})
         else:
