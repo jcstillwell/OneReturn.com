@@ -75,9 +75,6 @@ class MerchantAccount(AbstractBaseUser):
     primaryPhoneNumber = models.CharField(max_length=100, default=None)
     primaryEmailAddress = models.CharField(max_length=100, default=None)
     numRegisters = models.CharField(max_length=100, default=None)
-    dateCreated = models.DateTimeField(default=None)
-    temporaryUserID = models.CharField(default=None, unique=True)
-    temporaryPassword = models.CharField(default=None, unique=True)
     
     USERNAME_FIELD = 'merchantID'
 

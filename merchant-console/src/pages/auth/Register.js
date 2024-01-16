@@ -17,10 +17,9 @@ const MerchantRegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('https://onereturn.com/userapi/verify/', {
+            axios.get('https://onereturn.com/userapi/verifymerchant/', {
                 params: {
                     'email': email,
-                    'method':'merchant',
                 }
             })
             .then(response => {
@@ -63,7 +62,7 @@ const MerchantRegisterPreVerify = (props) =>
 
     return (
         <motion.div 
-            className='auth-form-container'
+            className='merchant-auth-form-container'
             initial={{width: "80%"}}
             animate={{width: "70%"}}
             exit={{width: "60%"}}
@@ -71,8 +70,8 @@ const MerchantRegisterPreVerify = (props) =>
         >
             <form className='register-pre-verify' onSubmit={handleSubmit}>
                 <div className='pre-verify-titles'>
-                    <h4>Welcome to the inbox built exclusively for managing receipts, no email sorting involved.</h4>
-                    <p>First, let's confirm your email address.</p>
+                    <h4>Simplify Your Receipts: Effortless Management for You and Your Customers!</h4>
+                    <p>First, let's confirm the primary contact that will be on the account.</p>
                 </div>
                 {confirmClicked && (
                         <div className='pre-verify-confirmation-message'>
@@ -165,7 +164,7 @@ const MerchantRegister = () => {
         return (
             <div className="merchant-reg-container">
                 <form className='merchant-reg-form' onSubmit={handleSubmit}>
-                    <p>Please fill out the required feilds below.</p>
+                    <h3>Please fill out the required feilds below.</h3>
                     <label htmlFor="businessName">Business Name</label>
                     <input name="businessName" value={formInfo.businessName} onChange={handleInput} id="businessName" type="text" placeholder="Example LLC" />
                     <label htmlFor='masterPassword'>masterPassword</label>
@@ -183,7 +182,7 @@ const MerchantRegister = () => {
                     <label htmlFor="">Number of physical registers</label>
                     <h6 className="form-note">If your business operates using a web-based platform(Etsy, Shopify, Website, etc...) and does not use physical registers, just enter NA.</h6>
                     <input name="numRegisters" value={formInfo.numRegisters} onChange={handleInput} id="numRegisters" type="text" placeholder="5, 10, 15, 20..." />
-                    <button className="submit-button" type="submit">Submit Lead</button>
+                    <button className="submit-button" type="submit">Submit</button>
                 </form>
                 <button className='link-btn' onClick={() => navigate("/signin")}>Already have an account? Sign in here.</button>
             </div>

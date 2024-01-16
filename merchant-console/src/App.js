@@ -5,7 +5,7 @@ import Router from './pages/nav/Routes.js';
 
 const App = () => {
   return (
-    <div className="App">
+    <div className="app-content">
       <Router/>
     </div>
   );

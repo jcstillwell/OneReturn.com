@@ -310,40 +310,26 @@ class MerchantRegisterView(APIView):
     def post(self, request):
         source_email = 'jcseagle21@gmail.com'
         email_password = 'vcibcvsaaftekzpp'
-        if request.data:
-            businessName = request.data.get('businessName', None)
-            masterPassword = request.data.get('masterPassword', None)
-            businessAddress = request.data.get('businessAddress', None)
-            businessType = request.data.get('businessType', None)
-            industry = request.data.get('industry', None)
-            primaryContactName = request.data.get('primaryContactName', None)
-            primaryPhoneNumber = request.data.get('primaryPhoneNumber', None)
-            primaryEmailAddress = request.data.get('primaryEmailAddress', None)
-            numRegisters = request.data.get('numRegisters', None)
+        businessName = request.data.get('businessName', None)
+        masterPassword = request.data.get('masterPassword', None)
+        businessAddress = request.data.get('businessAddress', None)
+        businessType = request.data.get('businessType', None)
+        industry = request.data.get('industry', None)
+        primaryContactName = request.data.get('primaryContactName', None)
+        primaryPhoneNumber = request.data.get('primaryPhoneNumber', None)
+        numRegisters = request.data.get('numRegisters', None)
 
-            merchantInfo = {
-                'businessName':businessName,
-                'masterPassword':masterPassword,
-                'businessAddress':businessAddress,
-                'businessType':businessType,
-                'industry':industry,
-                'primaryContactName':primaryContactName,
-                'primaryPhoneNumber':primaryPhoneNumber,
-                'numRegisters':numRegisters
-            }
-
-            tempUser = UnverifiedMerchantAccount.objects.create(
-                businessName = businessName,
-                businessAddress = businessAddress,
-                businessType = businessType,
-                industry = industry,
-                primaryContactName = primaryContactName,
-                primaryPhoneNumber = primaryPhoneNumber,
-                numRegisters = numRegisters,
-                dateCreated = timezone.now(),
-                temporaryUserID = f'{businessName.strip(" ")}'.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8)),
-                temporaryPassword = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
-            )
+        user = MerchantAccount.objects.create(
+            businessName = businessName,
+            masterPassword = masterPassword,
+            businessAddress = businessAddress,
+            businessType = businessType,
+            industry = industry,
+            primaryContactName = primaryContactName,
+            primaryPhoneNumber = primaryPhoneNumber,
+            numRegisters = numRegisters,
+        )
+        user.save()
 
 class VerifyMerchant(APIView):
 

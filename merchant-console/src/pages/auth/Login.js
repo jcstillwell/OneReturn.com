@@ -40,7 +40,7 @@ const MerchantLogin = () =>
     return (
         <div classname='merchant-auth-form-container'>
             <form className='merchant-auth-form' onSubmit={handleSubmit}>
-                <p>Welcome.</p>
+                <h3>Welcome.</h3>
                 {error && (
                     <label className='error-message'>{errorMsg}</label>
                 )}
@@ -52,7 +52,7 @@ const MerchantLogin = () =>
                 <input value={merchantMasterPassword} onChange={(e) => setMerchantMasterPassword(e.target.value)} type='password' placeholder="Your merchant password"/>
                 <button type="submit">Sign In</button>
             </form>
-            <button className="link-btn" onClick={() => navigate('/merchantregistration')}>Haven't signed up for OneReturn Business yet?. Click here to get started.</button>
+            <button className="link-btn" onClick={() => navigate('/merchantpreregister')}>Haven't signed up for OneReturn Business yet?. Click here to get started.</button>
         </div>
     )
 
