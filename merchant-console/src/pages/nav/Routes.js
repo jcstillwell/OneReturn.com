@@ -3,6 +3,7 @@ import { Route, Redirect, Routes, useNavigate, useLocation } from 'react-router-
 import MerchantLogin from '../auth/Login.js';
 import { MerchantRegister, MerchantRegisterPreVerify } from '../auth/Register.js';
 import MerchantConsole from '../app/Console.js';
+import Verify from '../auth/VerifyMerchant.js';
 import { AnimatePresence } from 'framer-motion'
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
                 <Route path="/merchantregistration" element={<MerchantRegister/>}/>
                 <Route path="/" element={<MerchantConsole/>}/>
                 <Route path='/merchantpreregister' element={<MerchantRegisterPreVerify/>}/>
+                <Route path="/verifymerchant" element={<Verify/>}/>
             </Routes>
         </AnimatePresence>
     )

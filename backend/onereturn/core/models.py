@@ -65,6 +65,7 @@ class AppUser(AbstractBaseUser):
         return self.email
     
 class MerchantAccount(AbstractBaseUser):
+    uuid = models.CharField(max_length=100, unique=True, default=None)
     merchantID = models.CharField(max_length=100, default=None)
     merchantMasterPassword = models.CharField(max_length=100, default=None)
     businessName = models.CharField(max_length=100, default=None)
@@ -75,6 +76,7 @@ class MerchantAccount(AbstractBaseUser):
     primaryPhoneNumber = models.CharField(max_length=100, default=None)
     primaryEmailAddress = models.CharField(max_length=100, default=None)
     numRegisters = models.CharField(max_length=100, default=None)
+    emailVerified = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'merchantID'
 
