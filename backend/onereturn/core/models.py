@@ -61,16 +61,16 @@ class AppUser(AbstractBaseUser):
     
 class MerchantAccount(AbstractBaseUser):
     uuid = models.CharField(max_length=100, unique=True, default=None)
-    merchantID = models.CharField(max_length=100, default=None)
-    merchantMasterPassword = models.CharField(max_length=100, default=None)
-    businessName = models.CharField(max_length=100, default=None)
-    businessAddress = models.CharField(max_length=100, default=None)
-    businessType = models.CharField(max_length=100, default=None)
-    industry = models.CharField(max_length=100, default=None)
-    primaryContactName = models.CharField(max_length=100, default=None)
-    primaryPhoneNumber = models.CharField(max_length=100, default=None)
+    merchantID = models.CharField(max_length=100, default=None, null=True)
+    merchantMasterPassword = models.CharField(max_length=100, default=None, null=True)
+    businessName = models.CharField(max_length=100, default=None, null=True)
+    businessAddress = models.CharField(max_length=100, default=None, null=True)
+    businessType = models.CharField(max_length=100, default=None, null=True)
+    industry = models.CharField(max_length=100, default=None, null=True)
+    primaryContactName = models.CharField(max_length=100, default=None, null=True)
+    primaryPhoneNumber = models.CharField(max_length=100, default=None, null=True)
     primaryEmailAddress = models.CharField(max_length=100, default=None)
-    numRegisters = models.CharField(max_length=100, default=None)
+    numRegisters = models.CharField(max_length=100, default=None, null=True)
     emailVerified = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'merchantID'
