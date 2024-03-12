@@ -87,7 +87,7 @@ class SendEmail(APIView):
                     tempMerchantAccount = UnverifiedMerchantAccount.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
+                    verifyEmail(source_email, to_email, email_password, f"https://console.onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
             else:
                 query = AppUser.objects.filter(email=to_email)
