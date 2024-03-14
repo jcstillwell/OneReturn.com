@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Invoice, Item, AppUser
+from core.models import Invoice, Item, AppUser, MerchantAccount
 
 class ItemSerializer(serializers.ModelSerializer):
 
@@ -30,7 +30,12 @@ class MerchantAccountSerializer(serializers.ModelSerializer):
     primaryContactName = serializers.CharField(max_length=100, default=None)
     primaryPhoneNumber = serializers.CharField(max_length=100, default=None)
     primaryEmailAddress = serializers.CharField(max_length=100, default=None)
-    numRegisters = serializers.CharField(max_length=100, default=None)  
+    numRegisters = serializers.CharField(max_length=100, default=None) 
+
+    class Meta:
+        model = MerchantAccount
+        fields = '__all__'
+
 
 class InvoiceSerializer(serializers.ModelSerializer):
 

@@ -52,7 +52,7 @@ const MerchantLogin = () =>
                 <input value={merchantMasterPassword} onChange={(e) => setMerchantMasterPassword(e.target.value)} type='password' placeholder="Your merchant password"/>
                 <button type="submit">Sign In</button>
             </form>
-            <button className="link-btn" onClick={() => navigate('/merchantpreregister')}>Haven't signed up for OneReturn Business yet?. Click here to get started.</button>
+            <button className="link-btn" onClick={() => navigate('/preregister')}>Haven't signed up for OneReturn Business yet?. Click here to get started.</button>
         </div>
     )
 

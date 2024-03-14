@@ -30,7 +30,7 @@ const MerchantRegisterPreVerify = (props) =>
                     console.log(Cookies.get('email_temp_save'))
                     console.log(response.data);
                     setEmailVerified(true);
-                    navigate('/merchantregistration');
+                    navigate('/register');
                 }
             })
             .catch(error => {
@@ -127,10 +127,10 @@ const MerchantRegister = () => {
                 'businessAddress':formInfo.businessAddress,
                 'businessType':formInfo.businessType,
                 'industry':formInfo.industry,
+                'masterPassword':formInfo.masterPassword,
                 'primaryContactName':formInfo.primaryContactName,
                 'primaryPhoneNumber':formInfo.primaryPhoneNumber,
                 'numRegisters':formInfo.numRegisters,
-                'masterPassword':formInfo.masterPassword,
             });
 
             if (response.data.status === 'OK') {

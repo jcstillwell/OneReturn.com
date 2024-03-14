@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
     const token = Cookies.get('token');
-    return token ? children : <Navigate to="/login" />;
+    return token ? children : <Navigate to="/signin" />;
 }
 
 export default PrivateRoute;
