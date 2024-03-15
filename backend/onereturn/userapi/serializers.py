@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class MerchantAccountSerializer(serializers.ModelSerializer):
     merchantID = serializers.CharField(max_length=100, default=None)
-    merchantMasterPassword = serializers.CharField(max_length=100, default=None)
+    masterPassword = serializers.CharField(max_length=100, default=None)
     businessName = serializers.CharField(max_length=100, default=None)
     businessAddress = serializers.CharField(max_length=100, default=None)
     businessType = serializers.CharField(max_length=100, default=None)

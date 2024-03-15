@@ -62,7 +62,7 @@ class AppUser(AbstractBaseUser):
 class MerchantAccount(AbstractBaseUser):
     uuid = models.CharField(max_length=100, unique=True, default=None)
     merchantID = models.CharField(max_length=100, default=None, null=True)
-    merchantMasterPassword = models.CharField(max_length=100, default=None, null=True)
+    masterPassword = models.CharField(max_length=100, default=None, null=True)
     businessName = models.CharField(max_length=100, default=None, null=True)
     businessAddress = models.CharField(max_length=100, default=None, null=True)
     businessType = models.CharField(max_length=100, default=None, null=True)

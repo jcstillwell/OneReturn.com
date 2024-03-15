@@ -122,7 +122,7 @@ const MerchantRegister = () => {
         
         try {
             const response = await axios.post('https://onereturn.com/userapi/merchantReg/', {
-                'uuid':Cookies.get('active-uuid'),
+                'uuid':Cookies.get('active-uuid'), //Don't do this, turn into global context hook instead
                 'businessName':formInfo.businessName,
                 'businessAddress':formInfo.businessAddress,
                 'businessType':formInfo.businessType,

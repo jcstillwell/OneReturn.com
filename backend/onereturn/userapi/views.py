@@ -324,7 +324,7 @@ class MerchantRegisterView(APIView):
                 account.numRegisters = serialized_account.data['numRegisters']
                 account.save()
             except IntegrityError:
-                return(Response({"status":"error",'type':'Integrity Error', "message":"Email already is in use."}, status=status.HTTP_401_UNAUTHORIZED))
+                return(Response({"status":"error",'type':'Integrity Error', "message":"Email is already in use."}, status=status.HTTP_401_UNAUTHORIZED))
             return(Response({"success":f"created account {account.uuid}"}))
         else:
             print(serialized_account.errors)
