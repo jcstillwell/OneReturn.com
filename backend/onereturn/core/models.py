@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 import uuid
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -25,20 +26,6 @@ class AppUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
-class MerchantAccountManager(BaseUserManager):
-    def create_user(self, uuid, primaryEmailAddress):
-        
-        MerchantAccount = self.model(
-            uuid = uuid,
-            primaryEmailAddress = primaryEmailAddress
-        )
-
-        def __str__(self):
-            return self.email
-        
-        MerchantAccount.save(using=self._db)
-        return MerchantAccount
 
 class AppUser(AbstractBaseUser):
     email = models.EmailField(unique=True, default=None, null=True)
@@ -59,23 +46,18 @@ class AppUser(AbstractBaseUser):
     def __str__(self):
         return self.email
     
-class MerchantAccount(AbstractBaseUser):
-    uuid = models.CharField(max_length=100, unique=True, default=None)
+## Migrate all merchant account functions to have authentication based on AppUsers auth system
+class MerchantAccount(models.Model):
+    user = models.OneToOneField(AppUser, on_delete=models.CASCADE, related_name='merchant_profile', default=None)
     merchantID = models.CharField(max_length=100, default=None, null=True)
-    masterPassword = models.CharField(max_length=100, default=None, null=True)
     businessName = models.CharField(max_length=100, default=None, null=True)
     businessAddress = models.CharField(max_length=100, default=None, null=True)
     businessType = models.CharField(max_length=100, default=None, null=True)
     industry = models.CharField(max_length=100, default=None, null=True)
     primaryContactName = models.CharField(max_length=100, default=None, null=True)
     primaryPhoneNumber = models.CharField(max_length=100, default=None, null=True)
-    primaryEmailAddress = models.CharField(max_length=100, default=None)
     numRegisters = models.CharField(max_length=100, default=None, null=True)
     emailVerified = models.BooleanField(default=False)
-    
-    USERNAME_FIELD = 'merchantID'
-
-    objects = MerchantAccountManager()
 
     def __str__(self):
         return self.merchantID
@@ -118,9 +100,9 @@ class UnverifiedUser(models.Model):
 
 
 class APIKey(models.Model):
-    key = models.CharField(max_length=255, unique=True)
+    key = models.UUIDField(default=uuid.uuid4, unique=True)
     created = models.DateTimeField(auto_now_add=True)
-    usageThisMonth = models.CharField(max_length=255, default=None)
+    usageThisMonth = models.CharField(max_length=255, default=0)
     owner = models.ForeignKey('MerchantAccount', default=None, on_delete=models.CASCADE)
 
 class APIKeyAuthentication():

@@ -19,15 +19,15 @@ const MerchantLogin = () =>
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://onereturn.com/userapi/authenticateMerchant/', {
+            const response = await axios.post('http://localhost:8000/authenticateMerchant/', {
                 'merchantID':merchantID,
                 'merchantAPIKey':merchantAPIKey,
-                'merchantMasterPassword':merchantMasterPassword,
+                'masterPassword':merchantMasterPassword,
             });
 
             if (response.data.status === 'OK') {
                 Cookies.set('merchant-auth-token', response.data.token, {expires: 7});
-                navigate("/console");
+                navigate("/");
                 setError(false);
                 setErrorMsg('');
             }

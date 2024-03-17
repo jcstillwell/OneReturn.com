@@ -12,7 +12,7 @@ const Searchbar = ({onSearch}) => {
         const newQuery = e.target.value;
         setQuery(newQuery);
         const token = Cookies.get('token');
-        axios.get('https://onereturn.com/userapi/search/', {
+        axios.get('http://localhost:8000/search/', {
             params: {
                 query: newQuery
             },

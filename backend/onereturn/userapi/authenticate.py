@@ -34,6 +34,31 @@ def verifyPhoneNumber(phone_number):
          to=phone_number
     )
 
+def confirmationEmail(source_email, to_email, password, merchantID, merchantAPIKey):
+    msg = EmailMessage()
+    msg['Subject'] = 'Verify Your Account'
+    msg['From'] = source_email
+    msg['To'] = to_email
+
+    msg.set_content('Please take careful note of the following credentials and delete this email')
+
+    html_content = f"""
+            <html>
+            <body>
+                <h1>Welcome to OneReturn for business!</h1>
+                <p>Here are your login credentials and API Key:</p>
+                <p>Merchant ID: {merchantID}</p>
+                <p>API Key: {merchantAPIKey}</p>
+            </body>
+            </html>
+            """
+
+    msg.add_alternative(html_content, subtype='html')
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        server.login(source_email, password)
+        server.send_message(msg)
+
 def verifyEmail(source_email, to_email, password, verification_link, method=None):
         
         if method == 'merchant':

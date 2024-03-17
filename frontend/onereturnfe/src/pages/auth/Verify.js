@@ -15,7 +15,7 @@ const Verify = () => {
         setIsVisible(false);
         const verifyToken = async () => {
             try {
-                const response = await axios.post('https://onereturn.com/userapi/verify/', {
+                const response = await axios.post('http://localhost:8000/verify/', {
                     'token':token
                 });
 

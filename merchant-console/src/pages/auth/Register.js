@@ -17,7 +17,7 @@ const MerchantRegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('https://onereturn.com/userapi/verifymerchant/', {
+            axios.get('http://localhost:8000/verifymerchant/', {
                 params: {
                     'email': email,
                 }
@@ -45,7 +45,7 @@ const MerchantRegisterPreVerify = (props) =>
 
         checkVerification();
         try {
-            const response = await axios.post('https://onereturn.com/userapi/sendEmail/', {
+            const response = await axios.post('http://localhost:8000/sendEmail/', {
                 'email':email,
                 'method':'merchant'
             });
@@ -121,7 +121,7 @@ const MerchantRegister = () => {
         e.preventDefault();
         
         try {
-            const response = await axios.post('https://onereturn.com/userapi/merchantReg/', {
+            const response = await axios.post('http://localhost:8000/merchantReg/', {
                 'uuid':Cookies.get('active-uuid'), //Don't do this, turn into global context hook instead
                 'businessName':formInfo.businessName,
                 'businessAddress':formInfo.businessAddress,
@@ -138,6 +138,7 @@ const MerchantRegister = () => {
                 setErrorMsg('');
                 setConfirmed(true);
                 setMessage(response.data.message);
+                console.log(message)
             } else {
                 setError(true);
                 setErrorMsg(response.data.message);

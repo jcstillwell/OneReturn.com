@@ -44,7 +44,7 @@ class Verify(APIView):
         email = request.GET.get('email')
         try:
                 query = AppUser.objects.get(email=email)
-                return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue singing in', 'uuid':query.uuid}, status=status.HTTP_200_OK)
+                return Response({'status':'OK', 'message':f'Successfully verified {query.email}! please return to previous screen to continue signing in', 'uuid':query.uuid}, status=status.HTTP_200_OK)
         except AppUser.DoesNotExist:
                 return Response({'status':'ERROR', 'message':'user has not been verified yet.'}) 
     def post(self, request):
@@ -80,15 +80,17 @@ class SendEmail(APIView):
             to_email = request.data.get('email', None)
 
             if method == 'merchant':
-                query = MerchantAccount.objects.filter(primaryEmailAddress=to_email)
+                query = MerchantAccount.objects.filter(user__email=to_email)
                 if len(query) > 0:
                     return Response({'status':'ERROR', 'message':'Email already in use'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
                     tempMerchantAccount = UnverifiedMerchantAccount.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"https://console.onereturn.com/verifyMerchant?token={tempMerchantAccount.token}",'merchant')
+                    verifyEmail(source_email, to_email, email_password, f"http://localhost:3000/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
+            if method == 'merchant_confirmation':
+                pass
             else:
                 query = AppUser.objects.filter(email=to_email)
                 if len(query) > 0:
@@ -97,7 +99,7 @@ class SendEmail(APIView):
                     tempuser = UnverifiedUser.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"https://onereturn.com/verify?token={tempuser.token}")
+                    verifyEmail(source_email, to_email, email_password, f"http://localhost:8000/verify?token={tempuser.token}")
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempuser.token}'}, status=status.HTTP_200_OK)
                 
 
@@ -282,25 +284,31 @@ class RegisterView(APIView):
         
 
 #MERCHANT CLASSES:
-        
+
+
+## Make line 297 find the account based on the merchantID and then set primaryEmail equal to the resultant account's email address, THEN use that variable and the password strign sent by the client to authenticate the user using the backend assigned to authenticate AppUser
 class MerchantAuthenticateView(APIView):
     def post(self, request):
         if request.data:
             merchantID = request.data.get('merchantID', None)
             merchantAPIKey = request.data.get('merchantAPIKey', None)
-            merchantMasterPassword = request.data.get('merchantMasterPassword', None)
+            merchantMasterPassword = request.data.get('masterPassword', None)
             try:
                 merchant = MerchantAccount.objects.get(merchantID = merchantID)
-                auth = authenticate(request, merchantID=merchantID, password=merchantMasterPassword)
+                auth = authenticate(request, email=merchant.user.email, password=merchantMasterPassword)
                 if auth is not None:
-                    token, created = token.objects.get_or_create(account=merchant)
-                    merchant_data = {'merchant-id':merchant.merchantID, 'merchant-api-key':merchant.merchantAPIKey}
-                    if merchant.merchantAPIKey != merchantAPIKey:
-                        return Response({'status':'error', 'message':'API key is either invalid or expired, please try again or contact customer support.'})
+                    token, created = Token.objects.get_or_create(user=merchant.user)
+                    merchantKey = APIKey.objects.get(owner__user__uuid = merchant.user.uuid)
+                    print(merchantKey.key)
+                    merchant_data = {'merchant-id':merchant.merchantID, 'merchant-api-key':merchantKey.key}
+                    if str(merchantKey.key) != merchantAPIKey.strip():
+                        return Response({'status':'error', 'message':'API key is either invalid or expired, please try again or contact customer support.'}, status=status.HTTP_401_UNAUTHORIZED)
                     else:
+                        print(token.key)
                         return Response({'status':'OK', 'token':token.key, 'data':merchant_data}, status=status.HTTP_200_OK)
                 else:
-                    return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
+                    print("here")
+                    return Response({"message":"Error occured while signing in, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
             except MerchantAccount.DoesNotExist:
                 return Response({"message":"Merchant ID not associated with account, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)
             
@@ -309,23 +317,30 @@ class MerchantRegisterView(APIView):
     def post(self, request):
         if request.data:
             print(request.data)
+            authUserUUID = request.data.get('uuid', None)
+            authUserPass = request.data.get('masterPassword', None)
+            #sends data to serializer model to be converted into python readable data
             serialized_account = MerchantAccountSerializer(data=request.data)
         if serialized_account.is_valid():
             try:
-                account = MerchantAccount.objects.get(uuid=serialized_account.data['uuid'])
-                account.merchantID = serialized_account.data['merchantID']
-                account.set_password(serialized_account.data['merchantMasterPassword'])
+                account = MerchantAccount.objects.get(user__uuid=authUserUUID)
                 account.businessName = serialized_account.data['businessName']
+                account.merchantID = serialized_account.data['businessName'].replace(" ", '') + ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+                account.user.set_password(authUserPass)
+                print(authUserPass)
                 account.businessAddress = serialized_account.data['businessAddress']
                 account.businessType = serialized_account.data['businessType']
                 account.industry = serialized_account.data['industry']
                 account.primaryContactName = serialized_account.data['primaryContactName']
                 account.primaryPhoneNumber = serialized_account.data['primaryPhoneNumber']
                 account.numRegisters = serialized_account.data['numRegisters']
+                account.user.save()
                 account.save()
+                merchantAPIKey = APIKey.objects.create(owner=account)
+                confirmationEmail('jcseagle21@gmail.com', account.user.email, 'vcibcvsaaftekzpp', account.merchantID, merchantAPIKey.key)
             except IntegrityError:
                 return(Response({"status":"error",'type':'Integrity Error', "message":"Email is already in use."}, status=status.HTTP_401_UNAUTHORIZED))
-            return(Response({"success":f"created account {account.uuid}"}))
+            return(Response({"status":"OK" ,"message":f"successfully created account {account.user.uuid}, you should receive a confirmation email shortly with your merchant ID number and API key"}, status=status.HTTP_200_OK))
         else:
             print(serialized_account.errors)
             return(Response({"error":"bad request"}))
@@ -335,8 +350,8 @@ class VerifyMerchant(APIView):
     def get(self, request):
         email = request.GET.get('email')
         try:
-                query = MerchantAccount.objects.get(primaryEmailAddress=email)
-                return Response({'status':'OK', 'message':f'Successfully verified {query.primaryEmailAddress}! please return to previous screen to continue singing up', 'uuid':query.uuid}, status=status.HTTP_200_OK)
+                query = MerchantAccount.objects.get(user__email=email)
+                return Response({'status':'OK', 'message':f'Successfully verified {query.user.email}! please return to previous screen to continue singing up', 'uuid':query.user.uuid}, status=status.HTTP_200_OK)
         except MerchantAccount.DoesNotExist:
                 return Response({'status':'ERROR', 'message':'Account has not been verified yet.'}) 
     def post(self, request):
@@ -347,15 +362,19 @@ class VerifyMerchant(APIView):
             else:
                 try:
                     try:
+                        #makes a query in db to find Unverified account objects passed in post request
                         account = UnverifiedMerchantAccount.objects.get(token=token)
+                        #creates new verified merchant account with token as uuid and deletes old unverified user account
                         UnverifiedMerchantAccount.objects.filter(email = account.email).exclude(pk=account.pk).delete()
-                        verified_account = MerchantAccount.objects.create_user(
-                            uuid=token,
-                            primaryEmailAddress=account.email,
+                        #creates an underlying user object for the merchant account class to build on that uses the AppUser class for authentication purposes
+                        authUser = AppUser.objects.create_user(uuid=token, email=account.email)
+                        authUser.save()
+                        verified_account = MerchantAccount.objects.create(
+                            user=authUser
                         )
                     except ValidationError:
                         return Response({'status':'ERROR', 'message':'The link you followed may be expired or broken, please try again.'})
-                    return Response({'status':'OK', 'message':f'the email address {verified_account.primaryEmailAddress} has been verified.'})
+                    return Response({'status':'OK', 'message':f'the email address {verified_account.user.email} has been verified.'})
                 except UnverifiedMerchantAccount.DoesNotExist:
                     return Response({'status':'ERROR', 'message':'Error verifying account, please try again later.'})
         else:

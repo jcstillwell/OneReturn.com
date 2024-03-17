@@ -55,7 +55,7 @@ const Wallet = () => {
         console.log(sharedWith);
         axios
         .post(
-            'https://onereturn.com/userapi/edit/',
+            'http://localhost:8000/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -82,7 +82,7 @@ const Wallet = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('https://onereturn.com/userapi/get/', {
+        axios.get('http://localhost:8000/get/', {
             headers: {
                 'Authorization': "Token " + token
             }

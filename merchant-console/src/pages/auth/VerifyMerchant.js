@@ -8,34 +8,34 @@ const Verify = () => {
     const [successMsg, setSuccessMsg] = useState('');
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [ranOnce, setRanOnce] = useState(false);
 
     useEffect(() => {
         const verifyToken = async () => {
-            try {
-                const response = await axios.post('https://onereturn.com/userapi/verifymerchant/', {
-                    'token':token
-                });
+                try {
+                    const response = await axios.post('http://localhost:8000/verifymerchant/', {
+                        'token':token
+                    });
 
-                if (response.data.status === 'OK') {
-                    setIsVerified(true);
-                    setSuccessMsg(response.data.message);
-                    console.log("success section, no axios error" + response.data.message);
-                    console.log("success msg:" + successMsg);
-                    console.log("Error msg:" + errorMsg);
-                } else {
+                    if (response.data.status === 'OK') {
+                        setIsVerified(true);
+                        setSuccessMsg(response.data.message);
+                        console.log("success section, no axios error" + response.data.message);
+                        console.log("success msg:" + successMsg);
+                        console.log("Error msg:" + errorMsg);
+                    } else {
+                        setError(true);
+                        setErrorMsg(response.data.message);
+                        console.log("else section, no axios error: " + response.data.message);
+                        console.log("Error msg:" + errorMsg);
+                        console.log("success msg:" + successMsg);
+                    }
+                } catch (error) {
+                    console.error(error);
                     setError(true);
-                    setErrorMsg(response.data.message);
-                    console.log("else section, no axios error: " + response.data.message);
-                    console.log("Error msg:" + errorMsg);
-                    console.log("success msg:" + successMsg);
+                    setErrorMsg(error.response?.data?.message || "An error occurred");
                 }
-            } catch (error) {
-                console.error(error);
-                setError(true);
-                setErrorMsg(error.response?.data?.message || "An error occurred");
-            }
         };
-
         verifyToken();
     }, [token]);
 
