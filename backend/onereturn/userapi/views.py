@@ -16,6 +16,11 @@ from django.db.models import Q, Count
 from core.models import *
 from .serializers import *
 
+BACKEND = os.environ.get('REACT_APP_BACKEND')
+USER_FRONTEND = os.environ.get('REACT_APP_USER_FRONTEND')
+MERCHANT_FRONTEND = os.environ.get('REACT_APP_MERCHANT_FRONTEND')
+API_FRONTEND = os.environ.get('REACT_APP_API_FRONTEND')
+
 class GetShared(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -87,7 +92,7 @@ class SendEmail(APIView):
                     tempMerchantAccount = UnverifiedMerchantAccount.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"http://localhost:3000/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
+                    verifyEmail(source_email, to_email, email_password, f"{MERCHANT_FRONTEND}/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
             if method == 'merchant_confirmation':
                 pass
