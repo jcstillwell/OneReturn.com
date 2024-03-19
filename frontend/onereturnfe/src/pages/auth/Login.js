@@ -8,6 +8,7 @@ import './styles/login.css'
 import "./styles/login-register-shared.css"
 
 const BACKEND = process.env.REACT_APP_BACKEND;
+console.log(process.env.REACT_APP_BACKEND);
 
 const Login = (props) =>
 {
@@ -23,7 +24,7 @@ const Login = (props) =>
         e.preventDefault();
         
         try {
-            const response = await axios.post(BACKEND+'/authenticate/', {
+            const response = await axios.post((BACKEND+'/authenticate/'), {
                 'email':email,
                 'password':pass,
             });
