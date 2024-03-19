@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import '../app/css/console.css';
 
+const BACKEND = process.env.REACT_APP_BACKEND;
 
 const Searchbar = ({onSearch}) => {
 
@@ -12,7 +13,7 @@ const Searchbar = ({onSearch}) => {
         const newQuery = e.target.value;
         setQuery(newQuery);
         const token = Cookies.get('token');
-        axios.get('http://localhost:8000/search/', {
+        axios.get(BACKEND+'/search/', {
             params: {
                 query: newQuery
             },

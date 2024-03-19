@@ -99,7 +99,7 @@ class SendEmail(APIView):
                     tempuser = UnverifiedUser.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"http://localhost:8000/verify?token={tempuser.token}")
+                    verifyEmail(source_email, to_email, email_password, f"{BACKEND}/verify?token={tempuser.token}")
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempuser.token}'}, status=status.HTTP_200_OK)
                 
 

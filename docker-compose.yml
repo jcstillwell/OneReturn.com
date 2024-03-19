@@ -7,21 +7,46 @@ services:
     command: gunicorn onereturn.wsgi --bind 0.0.0.0:8000 --workers=5 --threads=2
     ports:
       - "8000:8000"
+    environment:
+      - API_FRONTEND=https://api.onereturn.com
+      - MERCHANT_FRONTEND=https://console.onereturn.com
+      - FRONTEND=https://onereturn.com
+      - BACKEND=http://onereturn.com/userapi
+      - DB_PASSWORD=Cicada3301
+      - DB_NAME=onereturn
+      - DB_USER=postgres
+      - DB_HOST=onereturn.c4jih2f1nvwu.us-east-1.rds.amazonaws.com
+      - DB_PORT=5432
   frontend:
     build:
       context: ./frontend/onereturnfe
     volumes:
       - react_build:/react/build
+    environment:
+      - API_FRONTEND=https://api.onereturn.com
+      - MERCHANT_FRONTEND=https://console.onereturn.com
+      - USER_FRONTEND=https://onereturn.com
+      - BACKEND=http://onereturn.com/userapi
   merchant-frontend:
     build:
       context: ./merchant-console
     volumes:
       - merchant-react-build:/merchant-app/build
+    environment:
+      - API_FRONTEND=https://api.onereturn.com
+      - MERCHANT_FRONTEND=https://console.onereturn.com
+      - FRONTEND=https://onereturn.com
+      - BACKEND=http://onereturn.com/userapi
   api-frontend:
     build:
       context: ./api.onereturn.com-fe/api-frontend
     volumes:
       - api-frontend-build:/api-app/build
+    environment:
+      - API_FRONTEND=https://api.onereturn.com
+      - MERCHANT_FRONTEND=https://console.onereturn.com
+      - FRONTEND=https://onereturn.com
+      - BACKEND=http://onereturn.com/userapi
   nginx:
     image: nginx:latest
     ports:
@@ -33,6 +58,11 @@ services:
       - merchant-react-build:/var/www/merchant-react
       - api-frontend-build:/var/www/api-frontend
       - /etc/letsencrypt:/etc/letsencrypt
+    environment:
+      - API-FRONTEND=https://api.onereturn.com
+      - MERCHANT-FRONTEND=https://console.onereturn.com
+      - FRONTEND=https://onereturn.com
+      - BACKEND=http://onereturn.com/userapi
     depends_on:
       - backend
       - frontend

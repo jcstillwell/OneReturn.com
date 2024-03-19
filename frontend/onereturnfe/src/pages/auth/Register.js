@@ -9,6 +9,8 @@ import "./styles/register.css";
 import "./styles/email-phone-auth.css"
 import "./styles/login-register-shared.css"
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const RegisterPreVerify = (props) =>
 {
 
@@ -19,7 +21,7 @@ const RegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('http://localhost:8000/verify/', {
+            axios.get(BACKEND+'/verify/', {
                 params: {
                     'email': email
                 }
@@ -47,7 +49,7 @@ const RegisterPreVerify = (props) =>
 
         checkVerification();
         try {
-            const response = await axios.post('http://localhost:8000/sendEmail/', {
+            const response = await axios.post(BACKEND+'/sendEmail/', {
                 'email':email,
             });
             console.log(response.data);
@@ -114,7 +116,7 @@ const Register = (props) =>
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:8000/register/', {
+            const response = await axios.post(BACKEND+'/register/', {
                 'uuid':Cookies.get('active-uuid'),
                 'first_name':firstName,
                 'last_name':lastName,
@@ -126,7 +128,7 @@ const Register = (props) =>
             console.log(response.data);
             console.log(Cookies.get('email_temp_save'))
             try {
-                const response = await axios.post('http://localhost:8000/authenticate/', {
+                const response = await axios.post(BACKEND+'/authenticate/', {
                     'email': email, // Extremely insecure remove after demo.
                     'password':pass,
                 });

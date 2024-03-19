@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import './css/login.css';
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const MerchantLogin = () =>
 {
 
@@ -19,7 +21,7 @@ const MerchantLogin = () =>
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/authenticateMerchant/', {
+            const response = await axios.post(BACKEND+'/authenticateMerchant/', {
                 'merchantID':merchantID,
                 'merchantAPIKey':merchantAPIKey,
                 'masterPassword':merchantMasterPassword,

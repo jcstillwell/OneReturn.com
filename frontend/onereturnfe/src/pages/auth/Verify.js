@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { NavbarVisContext } from "../../context/NavbarVisContext";
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const Verify = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -15,7 +17,7 @@ const Verify = () => {
         setIsVisible(false);
         const verifyToken = async () => {
             try {
-                const response = await axios.post('http://localhost:8000/verify/', {
+                const response = await axios.post(BACKEND+'/verify/', {
                     'token':token
                 });
 

@@ -5,6 +5,8 @@ import axios from "axios";
 import "./dropdown.css"
 import { useNavigate, Link } from "react-router-dom";
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const Dropdown = () => {
 
     const { user, dispatch } = useContext(AuthContext);
@@ -14,7 +16,7 @@ const Dropdown = () => {
 
     const handleLogout = async (e) => {
 
-        const response = await axios.post('http://onereturn.com/userapi/logout/', {},{
+        const response = await axios.post(BACKEND+'/logout/', {},{
             headers: {
                 'Authorization': "Token " + token
             }

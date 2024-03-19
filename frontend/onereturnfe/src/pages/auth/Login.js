@@ -7,6 +7,8 @@ import { motion } from 'framer-motion';
 import './styles/login.css'
 import "./styles/login-register-shared.css"
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const Login = (props) =>
 {
     const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ const Login = (props) =>
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:8000/authenticate/', {
+            const response = await axios.post(BACKEND+'/authenticate/', {
                 'email':email,
                 'password':pass,
             });

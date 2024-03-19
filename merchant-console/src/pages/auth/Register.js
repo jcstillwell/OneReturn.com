@@ -7,6 +7,8 @@ import './css/register.css';
 import './css/preverify.css';
 import Cookies from "js-cookie";
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const MerchantRegisterPreVerify = (props) =>
 {
 
@@ -17,7 +19,7 @@ const MerchantRegisterPreVerify = (props) =>
 
     const checkVerification = async () => {
         if (confirmClicked) {
-            axios.get('http://localhost:8000/verifymerchant/', {
+            axios.get(BACKEND+'/verifymerchant/', {
                 params: {
                     'email': email,
                 }
@@ -45,7 +47,7 @@ const MerchantRegisterPreVerify = (props) =>
 
         checkVerification();
         try {
-            const response = await axios.post('http://localhost:8000/sendEmail/', {
+            const response = await axios.post(BACKEND+'/sendEmail/', {
                 'email':email,
                 'method':'merchant'
             });
@@ -121,7 +123,7 @@ const MerchantRegister = () => {
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:8000/merchantReg/', {
+            const response = await axios.post(BACKEND+'/merchantReg/', {
                 'uuid':Cookies.get('active-uuid'), //Don't do this, turn into global context hook instead
                 'businessName':formInfo.businessName,
                 'businessAddress':formInfo.businessAddress,

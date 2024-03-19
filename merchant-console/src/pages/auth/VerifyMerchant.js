@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const Verify = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -13,7 +15,7 @@ const Verify = () => {
     useEffect(() => {
         const verifyToken = async () => {
                 try {
-                    const response = await axios.post('http://localhost:8000/verifymerchant/', {
+                    const response = await axios.post(BACKEND+'/verifymerchant/', {
                         'token':token
                     });
 

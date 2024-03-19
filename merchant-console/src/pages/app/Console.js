@@ -6,6 +6,8 @@ import Searchbar from '../UI-Reusable/Searchbar.js';
 import Portal from '../UI-Reusable/Portal.js';
 import PopupWindow from '../UI-Reusable/PopupWindow.js';
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const MerchantConsole = () => {
 
     const [invoices, setInvoices] = useState([]);
@@ -54,7 +56,7 @@ const MerchantConsole = () => {
         console.log(sharedWith);
         axios
         .post(
-            'http://localhost:8000/edit/',
+            BACKEND+'/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -81,7 +83,7 @@ const MerchantConsole = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('http://localhost:8000/get/', {
+        axios.get(BACKEND+'/get/', {
             headers: {
                 'Authorization': "Token " + token
             }

@@ -7,6 +7,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import './wallet.css'
 
+const BACKEND = process.env.REACT_APP_BACKEND;
+
 const Wallet = () => {
 
     const [invoices, setInvoices] = useState([]);
@@ -55,7 +57,7 @@ const Wallet = () => {
         console.log(sharedWith);
         axios
         .post(
-            'http://localhost:8000/edit/',
+            BACKEND+'/edit/',
             {
               action: action,
               invoiceID: invoiceID,
@@ -82,7 +84,7 @@ const Wallet = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get('http://localhost:8000/get/', {
+        axios.get(BACKEND+'/get/', {
             headers: {
                 'Authorization': "Token " + token
             }
