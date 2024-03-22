@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib import admin
 import uuid
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -45,6 +46,18 @@ class AppUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    
+class AppUserAdmin(admin.ModelAdmin):
+
+    list_display = ('email', 'first_name', 'last_name', 'is_active', 'emailVerified', 'phoneVerifed', 'regComplete')
+    search_fields = ('email', 'first_name', 'last_name')
+    readonly_fields = ('uuid',)
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+admin.site.register(AppUser, AppUserAdmin)
     
 ## Migrate all merchant account functions to have authentication based on AppUsers auth system
 class MerchantAccount(models.Model):
