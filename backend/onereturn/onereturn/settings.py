@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'core',
-    ''
     'corsheaders',
 ]
 
@@ -111,6 +110,11 @@ DATABASES = {
         'PORT': DB_PORT,
     }
 }
+
+print("DB Host:")
+print(DB_HOST)
+print("DB Name:")
+print(DB_NAME)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

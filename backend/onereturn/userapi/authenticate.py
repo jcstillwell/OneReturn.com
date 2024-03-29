@@ -9,7 +9,7 @@ import twilio
 from twilio.rest import Client
 import random
 
-#TEMPORARY STORE IN ENV VARIABLE LATER.
+#TEMPORARY, STORE IN ENV VARIABLE LATER.
 twilio_sid = 'AC72e28bc17a6bb1d383f24d7527e29c55'
 twilio_auth_token = '90db36cb2a9f631d3aa901120b0f9d09'
 client = Client(twilio_sid, twilio_auth_token)
@@ -85,6 +85,7 @@ def verifyEmail(source_email, to_email, password, verification_link, method=None
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
                 server.login(source_email, password)
                 server.send_message(msg)
+                print("message sent")
         else:
             msg = EmailMessage()
             msg['Subject'] = 'Verify Your Account'
