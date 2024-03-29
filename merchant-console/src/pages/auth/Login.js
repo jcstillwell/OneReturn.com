@@ -2,6 +2,7 @@ import React, {useContext, useState} from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../../context/AuthContext.js';
 import './css/login.css';
 
 const BACKEND = process.env.REACT_APP_BACKEND;
@@ -13,6 +14,7 @@ const MerchantLogin = () =>
     const [merchantAPIKey, setMerchantAPIKey] = useState('');
     const [merchantMasterPassword, setMerchantMasterPassword] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('token'));
+    const { dispatch } = useContext(AuthContext);
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     let navigate = useNavigate();
@@ -29,6 +31,8 @@ const MerchantLogin = () =>
 
             if (response.data.status === 'OK') {
                 Cookies.set('merchant-auth-token', response.data.token, {expires: 7});
+                dispatch({type: 'LOGIN', payload: response.data});
+                console.log("success response from backend")
                 navigate("/");
                 setError(false);
                 setErrorMsg('');

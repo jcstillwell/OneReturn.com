@@ -4,7 +4,8 @@ import Cookies from "js-cookie";
 import { BrowserRouter } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
-    const token = Cookies.get('token');
+    //SECURITY NOTE: this does not look safe, likely need to add another layer of security here instead of just checking that a token does in fact exist.
+    const token = Cookies.get('merchant-auth-token');
     return token ? children : <Navigate to="/signin" />;
 }
 

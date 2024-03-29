@@ -15,6 +15,9 @@ from django.db.models import Q, Count
 
 from core.models import *
 from .serializers import *
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 BACKEND = os.environ.get('REACT_APP_BACKEND')
 USER_FRONTEND = os.environ.get('REACT_APP_USER_FRONTEND')
@@ -92,6 +95,7 @@ class SendEmail(APIView):
                     tempMerchantAccount = UnverifiedMerchantAccount.objects.create(
                         email=to_email
                     )
+                    print(MERCHANT_FRONTEND)
                     verifyEmail(source_email, to_email, email_password, f"{MERCHANT_FRONTEND}/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
             if method == 'merchant_confirmation':
