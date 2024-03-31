@@ -137,13 +137,29 @@
     align-items: center;
     justify-content: center;
     height: 80px;
+    width: 20%;
+    position: absolute;
+    top: 0;
+    left: 40%;
+    background-color: brown;
   }
 
   .search-field {
-    width: 60%;
+    width: 100%;
     padding: 10px;
     border: 1px solid black;
     border-radius: 20px;
+  }
+
+  #no-invoice {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 120px;
+    width: 300px;
+    top: 50%;
+    left: calc(50% - 150px);
+    background-color: aquamarine;
   }
 
   .invoice-container {
@@ -154,7 +170,6 @@
     width: 50%;
     border: 2px solid black;
     border-radius: 5px;
-    background-color: blanchedalmond;
   }
 
   .invoice-id-label {

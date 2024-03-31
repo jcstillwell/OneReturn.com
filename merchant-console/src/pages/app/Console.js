@@ -108,11 +108,11 @@ const MerchantConsole = () => {
             </div>
             {
                (!invoices || invoices.length === 0) ? (
-                    <>
+                    <div id='no-invoice'>
                         <p>Looks like you haven't issued any receipts yet.</p>
                         <a href='https://api.onereturn.com'>Get started.</a>
                         <a href='https://api.onereturn.com'>Report an issue.</a>
-                    </>
+                    </div>
                 ):(
                 <div className="invoiceContainer">
                     {invoices.map((invoice, index) => {
