@@ -255,11 +255,11 @@ class AuthenticateView(APIView):
             try:
                 user = AppUser.objects.get(email = email)
                 auth = authenticate(request, email=email, password=password)
-                if auth is not None & method is None:
+                if auth is not None and method is None:
                     token, created = Token.objects.get_or_create(user=user)
                     user_data = {"email":user.email, "firstName":user.first_name, "password":user.password, "uuid":user.uuid}
                     return Response({"status": "OK", "token" : token.key, "data":user_data})
-                elif auth is not None & method == 'external':
+                elif auth is not None and method == 'external':
                     return Response({"status": "OK", "uuid" : user.uuid})
                 else: 
                     return Response({"message":"user not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
