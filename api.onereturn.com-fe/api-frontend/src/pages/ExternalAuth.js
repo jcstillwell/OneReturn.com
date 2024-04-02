@@ -36,7 +36,11 @@ const ExternalAuthWindow = () =>
         } catch (error) {
             console.log(error); //Remove this!
             setError(true);
-            setErrorMsg(error.response.data.message);
+            const errorMessage = error.response && error.response.data && error.response.data.message
+            ? error.response.data.message
+            : 'An error occurred. Please try again later.';
+    
+            setErrorMsg(errorMessage);
         }
 
     }
