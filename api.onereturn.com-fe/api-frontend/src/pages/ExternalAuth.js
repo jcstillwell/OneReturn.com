@@ -22,10 +22,11 @@ const ExternalAuthWindow = () =>
             const response = await axios.post((BACKEND+'/authenticate/'), {
                 'email':email,
                 'password':pass,
+                'method':'external',
             });
 
             if (response.data.status === 'OK') {
-                window.opener.postMessage('TEST', "http://localhost:5500")
+                window.opener.postMessage(response.data.uuid, "http://localhost:5500")
                 setError(false);
                 setErrorMsg('');
             }

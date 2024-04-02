@@ -251,17 +251,21 @@ class AuthenticateView(APIView):
         if request.data:
             email = request.data.get('email', None)
             password = request.data.get('password', None)
+            method = request.data.get('method', None)
             try:
                 user = AppUser.objects.get(email = email)
                 auth = authenticate(request, email=email, password=password)
-                if auth is not None:
+                if auth is not None & method is None:
                     token, created = Token.objects.get_or_create(user=user)
                     user_data = {"email":user.email, "firstName":user.first_name, "password":user.password, "uuid":user.uuid}
                     return Response({"status": "OK", "token" : token.key, "data":user_data})
+                elif auth is not None & method == 'external':
+                    return Response({"status": "OK", "uuid" : user.uuid})
                 else: 
                     return Response({"message":"user not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
             except AppUser.DoesNotExist:
-                return Response({"message":"email not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({"message":"email not found", "status":"error"}, status=status.HTTP_401_UNAUTHORIZED)
+
 
         
 class LogoutView(APIView):
