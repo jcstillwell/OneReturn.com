@@ -31,7 +31,7 @@ class CreateInvoice(APIView):
             #searches and returns list of APIKey objs assoc with account and checks if any exist.
             api_key = APIKey.objects.filter(owner=merchant_account).first()
             if api_key > 0:
-                    #iterates through keys to see if any match the key passed by user and if one does, sets isValid to true
+                    #iterates through keys to see if any match the key passed by user and if one does, sets isValid to true.
                     for key in api_key:
                          if key == given_key:
                               self.isValid = True

@@ -1,10 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import Router from './pages/nav/Routes';
 
 function App() {
   return (
     <div className="App">
-      <h1>OneReturn API dev page</h1>
+      <Router />
     </div>
   );
 }
