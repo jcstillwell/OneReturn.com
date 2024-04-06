@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Searchbar from '../UI-Reusable/Searchbar.js';
 import Portal from '../UI-Reusable/Portal.js';
 import PopupWindow from '../UI-Reusable/PopupWindow.js';
-
+//WORK IN PROGRESS
 const BACKEND = process.env.REACT_APP_BACKEND;
 
 const MerchantConsole = () => {
@@ -83,7 +83,7 @@ const MerchantConsole = () => {
 
     const fetchData = () => {
         const token = Cookies.get('token');
-        axios.get(BACKEND+'/get/', {
+        axios.get(BACKEND+'/getmerchant/', {
             headers: {
                 'Authorization': "Token " + token
             }

@@ -19,6 +19,7 @@
     z-index: 999;
     padding-right: 20px;
     padding-left: 20px;
+
   }
   
   .fa-firstdraft {
@@ -28,12 +29,18 @@
 
   .navbar-logo {
     color: #ffffff;
-    justify-self: start;
+    height: 100%;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 10px;
     cursor: pointer;
-    flex: 1;
     text-decoration: none;
     font-size: 1.5rem;
+  }
+
+  .navbar-logo h3 {
   }
 
   .nav-menu {

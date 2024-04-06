@@ -24,8 +24,8 @@ const Landing = () => {
             </div>
 
             <div className="for-business" id='for-business'>
+                <h1 id='for-bus-title'>Use OneReturn for your business</h1>
                     <div id='for-business-sect1'>
-                        <h1>Use OneReturn for your business</h1>
                         <h3>
                             The average person has 1.75 email accounts, the average office worker receives 121 emails each day and, as of 2022, over 162 billion spam emails were sent everyday;
                             odds are: your customer's digital receipts are getting lost.
@@ -37,7 +37,7 @@ const Landing = () => {
                             Not only are OneReturn receipts searchable by any and all fields, they are formatted in an easy to read way and dynamic so customers can see live updates, such as a return, refund
                             or shipment status.
                         </h3>
-                        <button className="main-trial-button"><a href='https://console.onereturn.com/merchantregistration'>Try OneReturn for business.</a></button>
+                        <button className="main-trial-button"><a href='https://console.onereturn.com/preregister'>Try OneReturn for business.</a></button>
                     </div>
             </div>
 

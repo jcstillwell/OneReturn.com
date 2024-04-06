@@ -400,12 +400,53 @@ class VerifyMerchant(APIView):
                     return Response({'status':'ERROR', 'message':'Error verifying account, please try again later.'})
         else:
             return Response({'status':'ERROR', 'message':'No token received from client, please reload and try again.'})
-            
+
+#Fetches receipts issued by merchant account.      
 class GetMerchantViewInvoice(APIView):
+
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        if request.data:
-            merchantID = request.data.get('merchantID')
-            merchantAPIKey = request.data.get('merchantAPIKey')
+
+        query = request.query_params.get('query')
+        type = request.query_params.get('type')
+        given_key = request.GET.get('api_key')
+        merchant_account = request.user.merchant_profile
+        self.isValid = False
+        try: 
+            #searches and returns list of APIKey objs assoc with account and checks if any exist.
+            api_key = APIKey.objects.filter(owner__user__uuid=merchant_account.user.uuid)
+            if api_key.count() > 0:
+                    #iterates through keys to see if any match the key passed by user and if one does, sets isValid to true.
+                    for key in api_key:
+                        if str(key.key) == given_key:
+                            self.isValid = True
+                    if self.isValid:
+                        invoice_list = []
+                        if type == 'SINGLE':
+                            invoices = Invoice.objects.filter(merchantID=merchant_account.merchantID, invoiceID=query)
+                            if not invoices:
+                                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
+                        else:
+                            invoices = Invoice.objects.filter(merchantID=merchant_account.merchantID)
+                            if not invoices:
+                                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
+
+                        for invoice in invoices:
+                            serialized_invoice = InvoiceSerializer(invoice)
+                            items = Item.objects.filter(parent=invoice)
+                            serialized_items = ItemSerializer(items, many=True)
+                            invoice_list.append({
+                                'invoice': serialized_invoice.data,
+                                'items': serialized_items.data
+                            })
+
+                        return Response({"invoices":invoice_list})
+                    else:
+                        return Response({'ERROR':'API key is either invalid or expired please contact customer support at support@onereturn.com'}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                raise Exception("No API key associated with account")
+        except AttributeError:
+            print("here 1")
+            return Response({'ERROR':'You are not accessing this endpoint from a registered merchant account'}, status=status.HTTP_401_UNAUTHORIZED)

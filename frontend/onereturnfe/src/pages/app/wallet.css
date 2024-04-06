@@ -4,16 +4,44 @@
     left: 20px;
     top: 0px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
-    gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(1000px));
     grid-auto-rows: minmax(500px, auto);
+  }
+
+  #invoices-nondetailed-list {
+    background-color: aqua;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 15%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+    gap: 0;
+  }
+
+  .ndinvoicebox {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border: 1px solid rgb(133, 133, 133);
+    padding: 0;
+    margin: 0;
+  }
+
+  .ndinvoicebox h2 {
+    color: black;
+    font-size: 16px;
   }
   
   .invoiceBox {
     position: relative;
     border: 2px solid rgb(0, 0, 0);
     padding: 10px;
-    margin: 70px;
     width: 1000px; 
     height: 500px;  
     border-radius: 5px;
@@ -172,15 +200,6 @@
     left: 0;
     margin: 10px;
   }
-
-#invoices-nondetailed-list {
-  background-color: aqua;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 15%;
-  height: 100%;
-}
 
 #invoice-detailed {
   background-color: blue;

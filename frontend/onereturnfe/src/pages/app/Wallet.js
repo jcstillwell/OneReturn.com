@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useParams } from "react";
 import {Router, Switch, Route, Link } from 'react-router-dom';
 import PopupWindow from "../auth/PopupWindow";
 import Portal from "../../Util/Portal";
+import Invoice from "./Invoice";
 import Searchbar from "./Searchbar";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -15,6 +16,7 @@ const Wallet = () => {
     const [dropdownIndex, setDropdownIndex] = useState(null);
     const [shareIndex, setShareIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null);
+    const [currInvoice, setCurrInvoice] = useState(invoices[1]);
 
     let data;
     try {
@@ -102,108 +104,31 @@ const Wallet = () => {
         fetchData();
      }, []);
 
+    //NOTES FOR TOMMOROW: Trying to use the already create invoice component to load in the details and making it so clicking on the non detailed on passes the invoice id to the component.
     return (
         <div className="main-container">
             <div className="searchbar-container">
                 <Searchbar onSearch={handleSearchResults}/>
             </div>
             <div id="invoices-nondetailed-list">
-                <p>Filler</p>
-            </div>
-            <div id='invoice-detailed'>
-                {
-                (!invoices || invoices.length === 0) ? (
-                    <div className="invoiceContainer">
-                        <p>No receipts found</p>
+                {!invoices || invoices.length === 0 ? (
+                    <div className="ndinvoicebox">
+                    <p>No receipts found</p>
                     </div>
-                    ):(
-                        <div className="invoiceContainer">
-                            {invoices.map((invoice, index) => {
-                                return (
-                                    <div className='invoiceBox' key={index}>
-                                        {deleteIndex === index && (
-                                            <Portal>
-                                                <PopupWindow label='Are you sure you want to delete this receipt?' buttonLeft='Cancel' buttonRight='Confirm' 
-                                                confirm={() => editReceipt('DELETE', invoice.invoice.invoiceID, invoice.invoice.recipientID)} toggleVisibility={() => togglePopupDelete()}/>
-                                            </Portal>
-                                        )}
-                                        {shareIndex === index && (
-                                            <Portal>
-                                                <PopupWindow label='Share' buttonLeft='Cancel' buttonRight='Share' 
-                                                confirm={(output) => editReceipt('SHARE', invoice.invoice.invoiceID, invoice.invoice.recipientID, output)} toggleVisibility={() => togglePopupShare()} 
-                                                textfeild={true} textfeildCaption='Enter target user email address' textfeildLabel='email@domain.com' textfeildType='email'/>
-                                            </Portal>
-                                        )}
-                                        <div className="invoice-menu">
-                                            <div>
-                                                {invoice.invoice.flagged && (
-                                                    <i className="info-icon" class="fa-solid fa-flag"></i>
-                                                )}
-                                                {invoice.invoice.sharedWith.length > 0 && (
-                                                    <i className="info-icon" class="fa-solid fa-users"></i>
-                                                )}
-                                            </div>
-                                            <div>
-                                                <i className="invoice-icon" class="fa-solid fa-share" onClick={() => {togglePopupShare(index); console.log(invoice.invoice.sharedWith)}}></i>
-                                                <i className="invoice-icon" class="fa-solid fa-ellipsis-vertical" onClick={() => toggleDropdown(index)}></i>
-                                            </div>
-                                        </div>
-                                        {dropdownIndex === index && (
-                                                <div className="invoice-dropdown">
-                                                    <ul>
-                                                        <li onClick={() => editReceipt('FLAG', invoice.invoice.invoiceID, invoice.invoice.recipientID)}>
-                                                            <i class="fa-solid fa-flag"></i>
-                                                            <span>Flag</span>
-                                                        </li>
-                                                        <li>
-                                                            <i class="fa-solid fa-trash" onClick={() => togglePopupDelete(index)}></i>
-                                                            <span>Delete</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                        )}
-                                        <div className="merchant-info">
-                                            <div className="logo-container">
-                                                <img src='./sampleimg.jpg' className="logo"/>
-                                            </div>
-                                            <div className="merchant-labels-container">
-                                                <p className="merchantID">Merchant: {invoice.invoice.merchantID}</p>
-                                                <p className="merchant-individual-location">Location ID: {invoice.invoice.merchantLocNumber}</p>
-                                                <p className="merchantAddress">Address: {invoice.invoice.merchantAddress}</p>
-                                            </div>
-                                        </div>
-                                        <p className="item-tag">Items:</p>
-                                        <Link to={`/invoices/${invoice.invoice.invoiceID}`} key={index} className='invoiceLink'>
-                                        <div className="item-list-container">
-                                            <ul>
-                                                {
-                                                    invoice.items.map((item, itemIndex) => {
-                                                        return (
-                                                            <div className={item.returned ? "item-container-returned":"item-container"}>
-                                                                <li key={itemIndex}>
-                                                                    <p className="item-name">{item.name}: {item.price}</p>
-                                                                </li>
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-                                            </ul>
-                                        </div>
-                                        </Link>
-                                        <div className="invoice-info">
-                                            <p className="date-purchased">
-                                                {invoice.invoice.dateCreated}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    )
-                }
+                ) : (
+                    invoices.map((invoice, index) => (
+                    <div className='ndinvoicebox' key={index} onClick={() => setCurrInvoice(invoice.invoice.invoiceID)}>
+                        {console.log(invoice.invoice.invoiceID)}
+                        <h2>{invoice.invoice.invoiceID}</h2>
+                    </div>
+                    ))
+                )}
+            </div>
+            <div id="invoiced-detailed">
+                <Invoice invoiceID={currInvoice}/>
             </div>
         </div>
-    );
+        );
 }
 
 

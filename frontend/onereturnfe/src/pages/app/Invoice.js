@@ -6,9 +6,8 @@ import "./wallet.css";
 
 const BACKEND = process.env.REACT_APP_BACKEND;
 
-const Invoice = () => {
+const Invoice = (invoiceID) => {
 
-    const { invoiceID } = useParams();
     const [invoices, setInvoices] = useState([]);
     const [historyPage, setPage] = useState(false)
 
@@ -51,7 +50,7 @@ const Invoice = () => {
       };
 
 
-    const fetchData = () => {
+    const fetchData = (invoiceID) => {
         const token = Cookies.get('token');
         axios.get(BACKEND+'/get/', {
             params: {
@@ -72,7 +71,7 @@ const Invoice = () => {
     }
 
     useEffect(() => {
-        fetchData();
+        fetchData(invoiceID);
      }, []);
       
      return (
