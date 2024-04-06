@@ -299,17 +299,22 @@ class RegisterView(APIView):
 #MERCHANT CLASSES:
 
 
-## Make line 297 find the account based on the merchantID and then set primaryEmail equal to the resultant account's email address, THEN use that variable and the password strign sent by the client to authenticate the user using the backend assigned to authenticate AppUser
+#In the future, once testing is done, move the 'external' param to just be a GET request function.
 class MerchantAuthenticateView(APIView):
     def post(self, request):
         if request.data:
             merchantID = request.data.get('merchantID', None)
             merchantAPIKey = request.data.get('merchantAPIKey', None)
             merchantMasterPassword = request.data.get('masterPassword', None)
+            method = request.data.get('method', None)
+            print(request.data)
+            print(merchantAPIKey)
+            print(merchantID)
             try:
                 merchant = MerchantAccount.objects.get(merchantID = merchantID)
+                print(merchant.user.email)
                 auth = authenticate(request, email=merchant.user.email, password=merchantMasterPassword)
-                if auth is not None:
+                if auth is not None and method != 'external':
                     token, created = Token.objects.get_or_create(user=merchant.user)
                     merchantKey = APIKey.objects.get(owner__user__uuid = merchant.user.uuid)
                     print(merchantKey.key)
@@ -319,6 +324,9 @@ class MerchantAuthenticateView(APIView):
                     else:
                         print(token.key)
                         return Response({'status':'OK', 'token':token.key, 'data':merchant_data}, status=status.HTTP_200_OK)
+                elif auth is not None and method == 'external':
+                    token, created = Token.objects.get_or_create(user=merchant.user)
+                    return Response({"status": "OK", "sessiontoken":token.key})
                 else:
                     print("here")
                     return Response({"message":"Error occured while signing in, please try again or contact customer support."}, status=status.HTTP_401_UNAUTHORIZED)

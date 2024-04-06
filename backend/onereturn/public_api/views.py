@@ -23,18 +23,18 @@ class CreateInvoice(APIView):
     def post(self, request):
         invoice_data = request.data.get("invoice", None)
         item_data = request.data.get("items", [])
-        given_key = request.data.get("api_key", None)
-        merchant_account = request.user.merchant_account
+        given_key = request.data.get("api_key", None).strip("'\"")
+        merchant_account = request.user.merchant_profile
         self.isValid = False
 
         try: 
             #searches and returns list of APIKey objs assoc with account and checks if any exist.
-            api_key = APIKey.objects.filter(owner=merchant_account).first()
-            if api_key > 0:
+            api_key = APIKey.objects.filter(owner__user__uuid=merchant_account.user.uuid)
+            if api_key.count() > 0:
                     #iterates through keys to see if any match the key passed by user and if one does, sets isValid to true.
                     for key in api_key:
-                         if key == given_key:
-                              self.isValid = True
+                        if str(key.key) == given_key:
+                            self.isValid = True
                     if self.isValid:
                         if invoice_data:
                             serialized_invoice = InvoiceSerializer(data=invoice_data)
@@ -59,6 +59,5 @@ class CreateInvoice(APIView):
             else:
                 raise Exception("No API key associated with account")
         except AttributeError:
-            return Response({'ERROR':'You are not accessing this endpoint from a registered merchant account'}, status=status.HTTP_401_UNAUTHORIZED)
-        except Exception as e:
+            print("here 1")
             return Response({'ERROR':'You are not accessing this endpoint from a registered merchant account'}, status=status.HTTP_401_UNAUTHORIZED)

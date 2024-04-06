@@ -26,7 +26,7 @@ const ExternalAuthWindow = () =>
             });
 
             if (response.data.status === 'OK') {
-                window.opener.postMessage(response.data.uuid, "http://localhost:5500")
+                window.opener.postMessage(response.data.uuid, "http://127.0.0.1:5500")
                 setError(false);
                 setErrorMsg('');
             }
