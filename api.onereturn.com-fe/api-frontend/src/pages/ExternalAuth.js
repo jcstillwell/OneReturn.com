@@ -13,7 +13,24 @@ const ExternalAuthWindow = () =>
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get('token'));
+    const [sourceSite, setSourceSite] = useState('');
     let navigate = useNavigate();
+    let message;
+
+    useEffect(() => {
+        const handleMessage = (e) => {
+            let message = e.data;
+            if (message.type === "or-merchant-popup-msg") {
+                setSourceSite(message.data);
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,7 +43,8 @@ const ExternalAuthWindow = () =>
             });
 
             if (response.data.status === 'OK') {
-                window.opener.postMessage(response.data.uuid, "http://127.0.0.1:5500")
+                console.log(sourceSite);
+                window.opener.postMessage(response.data.uuid, sourceSite)
                 setError(false);
                 setErrorMsg('');
             }
