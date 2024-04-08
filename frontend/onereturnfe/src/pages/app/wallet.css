@@ -1,14 +1,4 @@
-.invoiceContainer {
-    position: relative;
-    width: 1200px;
-    left: 20px;
-    top: 0px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1000px));
-    grid-auto-rows: minmax(500px, auto);
-  }
-
-  #invoices-nondetailed-list {
+.invoices-nondetailed-list {
     background-color: aqua;
     position: absolute;
     top: 0;
@@ -19,9 +9,9 @@
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
     grid-auto-rows: minmax(100px, auto);
     gap: 0;
-  }
+}
 
-  .ndinvoicebox {
+.ndinvoicebox {
     width: 100%;
     height: 100px;
     display: flex;
@@ -31,185 +21,20 @@
     border: 1px solid rgb(133, 133, 133);
     padding: 0;
     margin: 0;
-  }
+}
 
-  .ndinvoicebox h2 {
+.ndinvoicebox h2 {
     color: black;
     font-size: 16px;
-  }
-  
-  .invoiceBox {
-    position: relative;
-    border: 2px solid rgb(0, 0, 0);
-    padding: 10px;
-    width: 1000px; 
-    height: 500px;  
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: aliceblue;
-    text-overflow: ellipsis;
-    transition: all ease 0.3s;
-  }
+}
 
-  .merchant-info {
-    display: flex;
-    align-items: flex-start;
-  }
-  
-  .logo-container {
-    margin-right: 10px;
-  }
-  
-  .logo {
-    width: 50px;
-    height: 50px;
-    background-color: black;
-  }
-  
-  .merchant-labels-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .merchant-labels-container p {
-    margin-bottom: 5px;
-  }
-
-  .invoiceBox:hover {
-    border: 3px solid rgb(0, 0, 0);
-    background-color: white;
-  }
-
-  .invoice-info {
-    position: absolute;
-    bottom: 0;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  a:hover {
-    text-decoration: none;
-  }
-  
-  .merchantID {
-    padding: 5px;
-    width: 150px;
-  }
-
-  .item-list-container {
-    overflow: hidden;
-    max-height: 250px;
-  }
-  
-  .item-list-container ul {
-    list-style-type: none;
-  }
-  
-  .item-list-container ul li {
-    padding: 10px;
-  }
-
-  .invoice-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .invoice-icon {
-    color: rgb(240, 0, 0);
-    padding-right: 10px;
-  }
-
-  .invoice-icon:hover {
-    color: rgb(0, 0, 0);
-    font-size: 1.5rem;
-  }
-
-  .info-icon {
-    color: rgb(0, 0, 0);
-  }
-
-  .invoice-dropdown {
-    position: absolute;
-    right: 0;
-    width: 70px;
-    background-color: rgb(127, 127, 130);
-    border: 2px solid black;
-    border-radius: 10px;
-  }
-
-  .invoice-dropdown ul {
-    list-style: none;
-    align-items: center;
-  }
-
-  .invoice-dropdown li:hover {
-    color: rgb(92, 92, 92);
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-  }
-
-  .item-container-returned {
-    background-color: lightgray;
-  }
-
-  .returned-label, .returned-funds {
-    color: rgb(255, 0, 0);
-  }
-
-  .search-field-container {
-    display: flex;
-    position: absolute;
-    top: 15px;
-    left: calc(85%/2);
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    width: 22vw;
-    background-color: brown;
-    z-index: 1;
-  }
-
-  .search-field {
+.main-container {
     width: 100%;
     height: 100%;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 20px;
-    background-color: red;
-    box-shadow: 1px 1px 1px #000000;
-  }
-
-  .invoice-container {
-    position: relative;
-    padding-top: 70px;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    width: 50%;
-    border: 2px solid black;
-    border-radius: 5px;
-    background-color: blanchedalmond;
-  }
-
-  .invoice-id-label {
     position: absolute;
     top: 0;
     left: 0;
-    margin: 10px;
-  }
-
-#invoice-detailed {
-  background-color: blue;
-  position: absolute;
-  left: 15%;
-  top: 0;
-  height: 100%;
-  width: calc(100% - 15%);
-}
-
-.ind-item-block {
-    border-bottom: 1px solid black;
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: column;
 }

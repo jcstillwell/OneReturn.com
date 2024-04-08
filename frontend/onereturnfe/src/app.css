@@ -20,12 +20,14 @@ body {
   display: flex;
   position: absolute;
   left: 150px;
-  top: 60px;
+  top: 10px;
   background-color: rgb(79, 248, 0);
   justify-content: center;
   align-items: center;
   width: calc(100% - 150px);
   height: calc(100% - 60px);
+  padding: none;
+  margin: none;
 }
 
 .app-content-other {

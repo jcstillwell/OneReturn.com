@@ -104,20 +104,25 @@ const Wallet = () => {
         fetchData();
      }, []);
 
+    const setInvoiceFocus = (invoiceID) => {
+        setCurrInvoice(invoiceID);
+        console.log("set: " + invoiceID);
+    }
+
     //NOTES FOR TOMMOROW: Trying to use the already create invoice component to load in the details and making it so clicking on the non detailed on passes the invoice id to the component.
     return (
         <div className="main-container">
             <div className="searchbar-container">
                 <Searchbar onSearch={handleSearchResults}/>
             </div>
-            <div id="invoices-nondetailed-list">
+            <div className="invoices-nondetailed-list">
                 {!invoices || invoices.length === 0 ? (
                     <div className="ndinvoicebox">
                     <p>No receipts found</p>
                     </div>
                 ) : (
                     invoices.map((invoice, index) => (
-                    <div className='ndinvoicebox' key={index} onClick={() => setCurrInvoice(invoice.invoice.invoiceID)}>
+                    <div className='ndinvoicebox' key={index} onClick={() => setInvoiceFocus(invoice.invoice.invoiceID)}>
                         {console.log(invoice.invoice.invoiceID)}
                         <h2>{invoice.invoice.invoiceID}</h2>
                     </div>

@@ -44,7 +44,7 @@ const ExternalAuthWindow = () =>
 
             if (response.data.status === 'OK') {
                 console.log(sourceSite);
-                window.opener.postMessage(response.data.uuid, sourceSite)
+                window.opener.postMessage(response.data.uuid, sourceSite);
                 setError(false);
                 setErrorMsg('');
             }

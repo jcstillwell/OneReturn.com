@@ -54,8 +54,8 @@ const Invoice = (invoiceID) => {
         const token = Cookies.get('token');
         axios.get(BACKEND+'/get/', {
             params: {
-                type: 'SINGLE',
-                query: invoiceID
+                'method': 'SINGLE',
+                'query': invoiceID,
             },
             headers: {
                 'Authorization': "Token " + token

@@ -181,15 +181,19 @@ class GetInvoice(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        query = request.query_params.get('query')
-        type = request.query_params.get('type')
+        query = request.GET.get('query')
+        method = request.GET.get('method')
         invoice_list = []
-        if type == 'SINGLE':
-            invoices = Invoice.objects.filter(recipientID=request.user.uuid, invoiceID=query)
+        print(method)
+        print(query)
+        if method == 'SINGLE':
+            invoices = Invoice.objects.filter(recipientID=request.user.uuid, invoiceID=query).first()
+            print("1")
             if not invoices:
                 return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
         else:
             invoices = Invoice.objects.filter(recipientID=request.user.uuid)
+            print("2")
             if not invoices:
                 return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -409,7 +413,7 @@ class GetMerchantViewInvoice(APIView):
 
     def get(self, request):
 
-        query = request.query_params.get('query')
+        query = request.query_params.get('query', None)
         type = request.query_params.get('type')
         given_key = request.GET.get('api_key')
         merchant_account = request.user.merchant_profile
