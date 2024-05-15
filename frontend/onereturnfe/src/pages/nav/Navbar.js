@@ -33,12 +33,6 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link to="home" className="nav-links" smooth={true} duration={500}>Home</Link>
                             </li>
-                            <li className="nav-item">
-                                <a href="/home" className="nav-links">For Businesses</a>
-                            </li>
-                            <li className="nav-item">
-                                <a href="/home" className="nav-links">Pricing</a>
-                            </li>
                             <li>
                                 <a href="https://api.onereturn.com" className="nav-links">API</a>
                             </li>
@@ -54,11 +48,6 @@ const Navbar = () => {
                 {isAuthenticated && (
                     <>
                         <ul className='nav-menu-right'>
-                            <li className="nav-item">
-                                <Link to='/wallet'>
-                                    <button className="btn">Dashboard</button>
-                                </Link>
-                            </li>
                             <li className="nav-item">
                                 <span className="nav-links" onClick={toggleDropdown}><i className='fa-solid fa-bars'/></span>
                             </li>

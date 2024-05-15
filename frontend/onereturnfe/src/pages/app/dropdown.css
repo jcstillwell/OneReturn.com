@@ -1,11 +1,15 @@
 .dropdown-container {
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     top: 60px;
     right: 30px;
     width: 130px;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
-    background-color: rgb(26, 23, 23);
+    background-color: rgb(0, 0, 0);
     border: 1px solid black;
 }
 
@@ -14,23 +18,34 @@
     top: -1rem;
     width: 25px;
     height: 25px;
-    background-color: gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
 }
 
 .dropdown-menu {
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
 .dropdown-item {
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
-    font-size: 1rem;
+    font-size: 19px;
     transition: all 0.3s ease;
 }
 
 .dropdown-item:hover {
-    color: grey;
+    color: rgb(172, 172, 172);
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 20px;
 }

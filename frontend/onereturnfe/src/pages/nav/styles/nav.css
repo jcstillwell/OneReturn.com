@@ -53,6 +53,7 @@
   .nav-item {
     align-items: center;
     height: 25px;
+    text-decoration: none;
   }
   
   .nav-links {

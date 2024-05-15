@@ -42,11 +42,11 @@ const Dropdown = () => {
                 <li></li>
                 <li className="dropdown-item" onClick={() => navigate('/settings')}>
                     <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
+                    <span className="dd-item-text">Settings</span>
                 </li>
                 <li className="dropdown-item" onClick={handleLogout}>
                     <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span className="dd-item-text">Logout</span>
                 </li>
             </ul>
         </div>

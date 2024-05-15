@@ -187,17 +187,10 @@ class GetInvoice(APIView):
         print(method)
         print(query)
         if method == 'SINGLE':
-            invoices = Invoice.objects.filter(recipientID=request.user.uuid, invoiceID=query).first()
+            invoice = Invoice.objects.filter(recipientID=request.user.uuid, invoiceID=query).first()
             print("1")
-            if not invoices:
+            if not invoice:
                 return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            invoices = Invoice.objects.filter(recipientID=request.user.uuid)
-            print("2")
-            if not invoices:
-                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
-
-        for invoice in invoices:
             serialized_invoice = InvoiceSerializer(invoice)
             items = Item.objects.filter(parent=invoice)
             serialized_items = ItemSerializer(items, many=True)
@@ -206,7 +199,23 @@ class GetInvoice(APIView):
                 'items': serialized_items.data
             })
 
-        return Response({"invoices":invoice_list})
+            return Response({"invoices":invoice_list})
+        else:
+            invoices = Invoice.objects.filter(recipientID=request.user.uuid)
+            print("2")
+            if not invoices:
+                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
+
+            for invoice in invoices:
+                serialized_invoice = InvoiceSerializer(invoice)
+                items = Item.objects.filter(parent=invoice)
+                serialized_items = ItemSerializer(items, many=True)
+                invoice_list.append({
+                    'invoice': serialized_invoice.data,
+                    'items': serialized_items.data
+                })
+
+            return Response({"invoices":invoice_list})
 
       
 class ChangeSettings(APIView):

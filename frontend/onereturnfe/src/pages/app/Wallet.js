@@ -16,7 +16,7 @@ const Wallet = () => {
     const [dropdownIndex, setDropdownIndex] = useState(null);
     const [shareIndex, setShareIndex] = useState(null);
     const [deleteIndex, setDeleteIndex] = useState(null);
-    const [currInvoice, setCurrInvoice] = useState(invoices[1]);
+    const [currInvoice, setCurrInvoice] = useState(null);
 
     let data;
     try {
@@ -104,12 +104,17 @@ const Wallet = () => {
         fetchData();
      }, []);
 
+     useEffect(() => {
+        if (invoices.length > 0) {
+            setCurrInvoice(invoices[0].invoice.invoiceID);
+        }
+     }, [invoices]);
+
     const setInvoiceFocus = (invoiceID) => {
         setCurrInvoice(invoiceID);
         console.log("set: " + invoiceID);
     }
 
-    //NOTES FOR TOMMOROW: Trying to use the already create invoice component to load in the details and making it so clicking on the non detailed on passes the invoice id to the component.
     return (
         <div className="main-container">
             <div className="searchbar-container">
@@ -129,8 +134,8 @@ const Wallet = () => {
                     ))
                 )}
             </div>
-            <div id="invoiced-detailed">
-                <Invoice invoiceID={currInvoice}/>
+            <div className="invoice-detailed">
+                {currInvoice && <Invoice invoiceID={currInvoice}/> }
             </div>
         </div>
         );

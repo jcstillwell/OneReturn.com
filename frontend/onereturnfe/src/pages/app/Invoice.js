@@ -6,8 +6,8 @@ import "./wallet.css";
 
 const BACKEND = process.env.REACT_APP_BACKEND;
 
-const Invoice = (invoiceID) => {
-
+const Invoice = ({invoiceID}) => {
+    
     const [invoices, setInvoices] = useState([]);
     const [historyPage, setPage] = useState(false)
 
@@ -72,53 +72,59 @@ const Invoice = (invoiceID) => {
 
     useEffect(() => {
         fetchData(invoiceID);
-     }, []);
+     }, [invoiceID]);
       
      return (
         <div className="invoice-container">
             {invoices.map((invoice, index) => (
                 <React.Fragment key={index}>
+                    <div className="detailed-invoice-info">
                         <h2 className="invoice-id-label">Invoice ID: {invoice.invoice.invoiceID}</h2>
-                        <h3>{invoice.invoice.merchantID}</h3>
-                        <h3>{invoice.invoice.merchantLocNumber}</h3>
-                        <h3>{invoice.invoice.merchantAddress}</h3>
-                        <h3>{invoice.invoice.recipientID}</h3>
-                        <button className="toggle-button" onClick={() => setPage(false)}>Items</button>
-                        <button className="toggle-button" onClick={() => setPage(true)}>History</button>
+                        <h3>Merchant ID: {invoice.invoice.merchantID}</h3>
+                        <h3>Merchant Address: {invoice.invoice.merchantAddress}</h3>
+                        <h3>Merchant Store/Location Number: {invoice.invoice.merchantLocNumber}</h3>
+                        <h3>Recipient ID: {invoice.invoice.recipientID}</h3>
+                    </div>
+                    <div className="buttons-container">
+                        <button id="toggle-button" onClick={() => setPage(false)}>Items</button>
+                        <button id="toggle-button" onClick={() => setPage(true)}>History</button>
+                    </div>
                     {!historyPage && (
-                        <div>
                             <div className="item-list-container-expanded">
                                 <div className="item-list-expanded">
                                     <h2>Items:</h2>
-                                    {invoice.items.map((item, itemIndex) => (
-                                        <div key={itemIndex} className="ind-item-block">
-                                            <h3>{item.name}</h3>
-                                            {item.returned && (
-                                                <div>
-                                                    <p className="returned-label">RETURNED</p>
-                                                    <p className="returned-funds">-{item.price}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
+                                    <div id="items">
+                                        {invoice.items.map((item, itemIndex) => (
+                                            <div key={itemIndex} className="ind-item-block">
+                                                <h3>{item.name}: ${item.price}</h3>
+                                                {item.returned && (
+                                                    <div>
+                                                        <p className="returned-label">RETURNED</p>
+                                                        <p className="returned-funds">-{item.price}</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     )}
                 </React.Fragment>
             ))}
-            {historyPage && ( 
-                <div className="transaction-history-container">
-                    <h2>History:</h2>
-                    {invoices[0]?.invoice.transactionHistory.map((i, iIndex) => (
-                        <div key={iIndex}>
-                            <h3 className="ind-item-block">{i}</h3>
+                    {historyPage && ( 
+                        <div className="transaction-history-container">
+                            <h2>History:</h2>
+                            <div id="items">
+                                {invoices[0]?.invoice.transactionHistory.map((i, iIndex) => (
+                                    <div key={iIndex}>
+                                        <h3 className="ind-item-block">{i}</h3>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    ))}
+                    )}
                 </div>
-            )}
-        </div>
-    );    
+            );    
 }
 
 export default Invoice;

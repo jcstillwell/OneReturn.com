@@ -7,8 +7,11 @@
     width: 15%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: 100px;
+    overflow: scroll;
+    scrollbar-width: none;
     gap: 0;
+    margin: 0;
 }
 
 .ndinvoicebox {
@@ -18,12 +21,12 @@
     flex-direction: column;
     align-items: center;
     background-color: white;
-    border: 1px solid rgb(133, 133, 133);
+    border: 1px solid rgb(0, 0, 0);
     padding: 0;
     margin: 0;
 }
 
-.ndinvoicebox h2 {
+.ndinvoicebox h2, h1 {
     color: black;
     font-size: 16px;
 }
@@ -37,4 +40,71 @@
     background-color: blueviolet;
     display: flex;
     flex-direction: column;
+}
+
+.invoice-detailed {
+    background-color: rgb(252, 252, 252);
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 85%;
+    height: 100%;
+}
+
+.invoice-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 60px;
+    overflow: scroll;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+}
+
+.detailed-invoice-info {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-list-container-expanded, .transaction-history-container {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons-container {
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#toggle-button {
+    margin: 5px;
+    margin-bottom: 25px;
+    background-color: #012a4a;
+    width: 80px;
+    height: 40px;
+    font-size: large;
+    border-radius: 15px;
+}
+
+#items {
+    min-height: 400px;
 }
