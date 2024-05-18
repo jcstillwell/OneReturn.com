@@ -421,18 +421,21 @@ class GetMerchantViewInvoice(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-
+        print(f'AUTH TOKEN: {request.auth}')
         query = request.query_params.get('query', None)
         type = request.query_params.get('type')
         given_key = request.GET.get('api_key')
         merchant_account = request.user.merchant_profile
         self.isValid = False
         try: 
+            #key searching functions below are temp, will switch to aws system for prod
             #searches and returns list of APIKey objs assoc with account and checks if any exist.
             api_key = APIKey.objects.filter(owner__user__uuid=merchant_account.user.uuid)
             if api_key.count() > 0:
                     #iterates through keys to see if any match the key passed by user and if one does, sets isValid to true.
                     for key in api_key:
+                        print(key.key)
+                        print(f"given key: {given_key}")
                         if str(key.key) == given_key:
                             self.isValid = True
                     if self.isValid:
@@ -440,11 +443,13 @@ class GetMerchantViewInvoice(APIView):
                         if type == 'SINGLE':
                             invoices = Invoice.objects.filter(merchantID=merchant_account.merchantID, invoiceID=query)
                             if not invoices:
-                                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
+                                return Response({"message": "No invoices have been issued from this account yet."}, status=status.HTTP_404_NOT_FOUND)
                         else:
                             invoices = Invoice.objects.filter(merchantID=merchant_account.merchantID)
+                            print('HERE')
                             if not invoices:
-                                return Response({"message": "No invoices have been assigned to this user."}, status=status.HTTP_404_NOT_FOUND)
+                                print('HERE')
+                                return Response({"message": "No invoices have been issued from this account yet."}, status=status.HTTP_404_NOT_FOUND)
 
                         for invoice in invoices:
                             serialized_invoice = InvoiceSerializer(invoice)
@@ -463,3 +468,17 @@ class GetMerchantViewInvoice(APIView):
         except AttributeError:
             print("here 1")
             return Response({'ERROR':'You are not accessing this endpoint from a registered merchant account'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+#function to retreive data such as merchantID and API Key on a merchant account behind a verification wall for as-needed use rather than storing it in the frontend.
+class RetrieveMerchantData(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try: 
+            #REMOVE: returns as a list, should probably change this later but will keep for demo purposes
+            api_keys = APIKey.objects.filter(owner__user__uuid=request.user.merchant_profile.user.uuid)
+            merchantID = request.user.merchant_profile.merchantID
+            return Response({'status':'OK', 'merchantID':merchantID, 'api_key':api_keys[0].key}, status=status.HTTP_200_OK)
+        except AttributeError:
+            return Response({'status':'ERROR'}, status=status.HTTP_401_UNAUTHORIZED)

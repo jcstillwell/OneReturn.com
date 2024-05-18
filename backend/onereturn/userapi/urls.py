@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('get/', views.GetInvoice.as_view(), name='getinvoice'),
+    path('getmerchant/', views.GetMerchantViewInvoice.as_view(), name='getmerchant'),
+    path('retrieveaccdata/', views.RetrieveMerchantData.as_view(), name='retrievedata'),
     path('shared/', views.GetShared.as_view(), name='getshared'),
     path('edit/', views.EditInvoice.as_view(), name='edit'),
     path('sendEmail/', views.SendEmail.as_view(), name='sendemail'),
