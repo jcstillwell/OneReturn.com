@@ -1,184 +1,110 @@
-.invoiceContainer {
-    position: relative;
-    width: 1200px;
-    left: 20px;
-    top: 0px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
-    gap: 50px;
-    grid-auto-rows: minmax(500px, auto);
-  }
-  
-  .invoiceBox {
-    position: relative;
-    border: 2px solid rgb(0, 0, 0);
-    padding: 10px;
-    margin: 70px;
-    width: 1000px; 
-    height: 500px;  
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: aliceblue;
-    text-overflow: ellipsis;
-    transition: all ease 0.3s;
-  }
+.invoices-nondetailed-list {
+  background-color: aqua;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 15%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  grid-auto-rows: 100px;
+  overflow: scroll;
+  scrollbar-width: none;
+  gap: 0;
+  margin: 0;
+}
 
-  .merchant-info {
-    display: flex;
-    align-items: flex-start;
-  }
-  
-  .logo-container {
-    margin-right: 10px;
-  }
-  
-  .logo {
-    width: 50px;
-    height: 50px;
-    background-color: black;
-  }
-  
-  .merchant-labels-container {
-    display: flex;
-    flex-direction: column;
-  }
+.ndinvoicebox {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border: 1px solid rgb(0, 0, 0);
+  padding: 0;
+  margin: 0;
+}
 
-  .merchant-labels-container p {
-    margin-bottom: 5px;
-  }
+.ndinvoicebox h2, h1 {
+  color: black;
+  font-size: 16px;
+}
 
-  .invoiceBox:hover {
-    border: 3px solid rgb(0, 0, 0);
-    background-color: white;
-  }
+.main-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: blueviolet;
+  display: flex;
+  flex-direction: column;
+}
 
-  .invoice-info {
-    position: absolute;
-    bottom: 0;
-  }
+.invoice-detailed {
+  background-color: rgb(252, 252, 252);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 85%;
+  height: 100%;
+}
 
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  a:hover {
-    text-decoration: none;
-  }
-  
-  .merchantID {
-    padding: 5px;
-    width: 150px;
-  }
+.invoice-container {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 60px;
+  overflow: scroll;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+}
 
-  .item-list-container {
-    overflow: hidden;
-    max-height: 250px;
-  }
-  
-  .item-list-container ul {
-    list-style-type: none;
-  }
-  
-  .item-list-container ul li {
-    padding: 10px;
-  }
+.detailed-invoice-info {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  .invoice-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.item-list-container-expanded, .transaction-history-container {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  .invoice-icon {
-    color: rgb(240, 0, 0);
-    padding-right: 10px;
-  }
+.buttons-container {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
-  .invoice-icon:hover {
-    color: rgb(0, 0, 0);
-    font-size: 1.5rem;
-  }
+#toggle-button {
+  margin: 5px;
+  margin-bottom: 25px;
+  background-color: #012a4a;
+  width: 80px;
+  height: 40px;
+  font-size: large;
+  border-radius: 15px;
+}
 
-  .info-icon {
-    color: rgb(0, 0, 0);
-  }
-
-  .invoice-dropdown {
-    position: absolute;
-    right: 0;
-    width: 70px;
-    background-color: rgb(127, 127, 130);
-    border: 2px solid black;
-    border-radius: 10px;
-  }
-
-  .invoice-dropdown ul {
-    list-style: none;
-    align-items: center;
-  }
-
-  .invoice-dropdown li:hover {
-    color: rgb(92, 92, 92);
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-  }
-
-  .item-container-returned {
-    background-color: lightgray;
-  }
-
-  .returned-label, .returned-funds {
-    color: rgb(255, 0, 0);
-  }
-
-  .search-field-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 80px;
-    width: 20%;
-    position: absolute;
-    top: 0;
-    left: 40%;
-    background-color: brown;
-  }
-
-  .search-field {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 20px;
-  }
-
-  #no-invoice {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    height: 120px;
-    width: 300px;
-    top: 50%;
-    left: calc(50% - 150px);
-    background-color: aquamarine;
-  }
-
-  .invoice-container {
-    position: relative;
-    padding-top: 70px;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    width: 50%;
-    border: 2px solid black;
-    border-radius: 5px;
-  }
-
-  .invoice-id-label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 10px;
-  }
-
-.ind-item-block {
-    border-bottom: 1px solid black;
+#items {
+  min-height: 400px;
 }

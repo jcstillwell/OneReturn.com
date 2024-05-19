@@ -446,9 +446,7 @@ class GetMerchantViewInvoice(APIView):
                                 return Response({"message": "No invoices have been issued from this account yet."}, status=status.HTTP_404_NOT_FOUND)
                         else:
                             invoices = Invoice.objects.filter(merchantID=merchant_account.merchantID)
-                            print('HERE')
                             if not invoices:
-                                print('HERE')
                                 return Response({"message": "No invoices have been issued from this account yet."}, status=status.HTTP_404_NOT_FOUND)
 
                         for invoice in invoices:
