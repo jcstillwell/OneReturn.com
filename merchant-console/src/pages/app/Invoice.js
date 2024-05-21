@@ -21,7 +21,7 @@ const Invoice = ({invoiceID}) => {
     }
 
     const editReceipt = (action, invoiceID, recipientID, sharedWith='', itemName='', returner='') => {
-        const token = Cookies.get('token');
+        const token = Cookies.get('merchant-auth-token');
         console.log(sharedWith);
         axios
         .post(BACKEND+'/edit/',
@@ -51,7 +51,7 @@ const Invoice = ({invoiceID}) => {
 
 
     const fetchData = (invoiceID) => {
-        const token = Cookies.get('token');
+        const token = Cookies.get('merchant-auth-token');
         axios.get(BACKEND+'/get/', {
             params: {
                 'method': 'SINGLE',

@@ -467,7 +467,7 @@ class GetMerchantViewInvoice(APIView):
             print("here 1")
             return Response({'ERROR':'You are not accessing this endpoint from a registered merchant account'}, status=status.HTTP_401_UNAUTHORIZED)
         
-#function to retreive data such as merchantID and API Key on a merchant account behind a verification wall for as-needed use rather than storing it in the frontend.
+#function to retrieve data such as merchantID and API Key on a merchant account behind a verification wall for as-needed use rather than storing it in the frontend.
 class RetrieveMerchantData(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
