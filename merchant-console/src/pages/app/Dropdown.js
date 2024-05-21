@@ -28,12 +28,12 @@ const Dropdown = () => {
             console.error('There was an error', error);
         });
 
-        Cookies.remove('token');
+        Cookies.remove('merchant-auth-token');
         Cookies.remove('data');
         Cookies.remove('active-uuid');
 
         dispatch({ type: 'LOGOUT' });
-        navigate('/home');
+        navigate('/signin');
     }
 
     return (

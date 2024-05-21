@@ -16,12 +16,12 @@ export const authReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
-        user: Cookies.get('token') ? {token:Cookies.get('token')} : null
+        user: Cookies.get('merchant-auth-token') ? {token:Cookies.get('merchant-auth-token')} : null
     });
 
     useEffect(() => {
-        if(Cookies.get('token') && !state.user){
-            dispatch({type: 'LOGIN', payload: {token: Cookies.get('token')}});
+        if(Cookies.get('merchant-auth-token') && !state.user){
+            dispatch({type: 'LOGIN', payload: {token: Cookies.get('merchant-auth-token')}});
         }
     }, [state.user])
 

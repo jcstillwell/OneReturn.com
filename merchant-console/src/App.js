@@ -14,7 +14,7 @@ const App = () => {
 
   const { pathname } = useLocation();
   const settingsDashPages = ['/settings', '/settings/user','/settings/receipts'];
-  const walletDashPages = ['/wallet', '/shared', 'returns'];
+  const walletDashPages = ['/receipts', '/accounts', '/returns'];
 
   useEffect(() => {
       if(walletDashPages.includes(pathname)){
@@ -26,7 +26,7 @@ const App = () => {
         dispatch({type: 'SETTINGS_BAR'});
       }
       else if(pathname === '/'){
-        navigate('/wallet')
+        navigate('/receipts')
       } else {
         dispatch({type: 'HIDE_BAR'});
       }

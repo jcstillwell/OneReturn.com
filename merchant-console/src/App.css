@@ -1,9 +1,46 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
 .app-content {
+  position: absolute;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(45deg, #A2AEBB, #DFE0E2);
+  height: calc(100vh - 60px);
   width: 100vw;
-  height: 100vh;
+  top: 60px;
+  background: rgb(255, 255, 255);
+}
+
+.app-content-dashboard {
+display: flex;
+position: absolute;
+left: 150px;
+top: 60px;
+background-color: rgb(79, 248, 0);
+justify-content: center;
+align-items: center;
+width: calc(100vw - 150px);
+height: calc(100vh - 60px);
+padding: none;
+margin: none;
+}
+
+.app-content-other {
+  background-color: rgb(255, 255, 255);
 }

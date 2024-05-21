@@ -32,17 +32,13 @@ const Sidebar = () => {
       case 'WALLET_BAR':
         return (
           <div className="menu-container-normal">
-            <div className="menu-item" onClick={() => navigate('/wallet')}>
+            <div className="menu-item" onClick={() => navigate('/receipts')}>
               <i class="fa-solid fa-wallet fa-2xl"></i>
-              <span className="dash-text">Wallet</span>
+              <span className="dash-text">Receipts</span>
             </div>
-            <div className="menu-item" onClick={() => navigate('/shared')}>
+            <div className="menu-item" onClick={() => navigate('/accounts')}>
               <i class="fa-solid fa-users fa-2xl"></i>
-              <span className="dash-text">Shared</span>
-            </div>
-            <div className="menu-item" onClick={() => navigate('/returns')}>
-              <i class="fa-solid fa-arrow-left fa-2xl"></i>
-              <span className="dash-text">Returns</span>
+              <span className="dash-text">Accounts</span>
             </div>
           </div>
         );

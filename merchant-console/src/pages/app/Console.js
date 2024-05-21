@@ -121,6 +121,7 @@ const MerchantConsole = () => {
     const setInvoiceFocus = (invoiceID) => {
         setCurrInvoice(invoiceID);
         console.log("set: " + invoiceID);
+        console.log("curr: " + currInvoice)
     }
 
     return (

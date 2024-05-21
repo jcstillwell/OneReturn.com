@@ -52,18 +52,30 @@ const Invoice = ({invoiceID}) => {
 
     const fetchData = (invoiceID) => {
         const token = Cookies.get('merchant-auth-token');
-        axios.get(BACKEND+'/get/', {
-            params: {
-                'method': 'SINGLE',
-                'query': invoiceID,
-            },
+        axios.get(BACKEND+'/retrieveaccdata/', {
             headers: {
                 'Authorization': "Token " + token
             }
         })
         .then((response) => {
             console.log(response);
-            setInvoices(response.data.invoices)
+            axios.get(BACKEND+'/getmerchant/', {
+                params: {
+                    'method': 'SINGLE',
+                    'query': invoiceID,
+                    'api_key': response.data.api_key,
+                },
+                headers: {
+                    'Authorization': "Token " + token
+                }
+                })
+                .then((response) => {
+                    console.log(response);
+                    setInvoices(response.data.invoices)
+                })
+                .catch((error) => {
+                    console.error('error: ', error);
+                });
         })
         .catch((error) => {
             console.error('error: ', error);

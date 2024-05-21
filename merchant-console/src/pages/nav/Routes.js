@@ -17,7 +17,7 @@ function Router() {
             <Routes location={location} key={location.pathname}>
                 <Route path="/signin" element={<MerchantLogin/>}/>
                 <Route path="/register" element={<MerchantRegister/>}/>
-                <Route path="/" element={<PrivateRoute><MerchantConsole/></PrivateRoute>}/>
+                <Route path="/receipts" element={<PrivateRoute><MerchantConsole/></PrivateRoute>}/>
                 <Route path='/preregister' element={<MerchantRegisterPreVerify/>}/>
                 <Route path="/verifymerchant" element={<Verify/>}/>
             </Routes>
