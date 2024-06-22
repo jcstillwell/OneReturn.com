@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import logo from './logo.svg';
 import './App.css';
 import { Route, Redirect, Routes, useNavigate, useLocation} from 'react-router-dom';
 import { SidebarContext } from "./context/SidebarContext.js";

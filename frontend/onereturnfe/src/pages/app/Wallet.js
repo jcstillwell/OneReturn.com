@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext, useParams } from "react";
 import {Router, Switch, Route, Link } from 'react-router-dom';
 import PopupWindow from "../auth/PopupWindow";
 import Portal from "../../Util/Portal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import Invoice from "./Invoice";
 import Searchbar from "./Searchbar";
 import axios from "axios";
