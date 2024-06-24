@@ -8,7 +8,7 @@ const BACKEND = process.env.REACT_APP_BACKEND;
 
 const Account = ({accountID}) => {
     
-    const [accounts, setAccounts] = useState([]);
+    const [accounts, setAccounts] = useState([]); 
     const [historyPage, setPage] = useState(false)
 
 
