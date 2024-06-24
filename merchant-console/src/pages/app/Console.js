@@ -1,11 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import Searchbar from '../UI-Reusable/Searchbar.js';
-import Portal from '../UI-Reusable/Portal.js';
-import PopupWindow from '../UI-Reusable/PopupWindow.js';
 import Invoice from "./Invoice";
+import "./css/console.css"
 //WORK IN PROGRESS
 const BACKEND = process.env.REACT_APP_BACKEND;
 

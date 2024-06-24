@@ -6,10 +6,11 @@ import Searchbar from '../UI-Reusable/Searchbar.js';
 import Portal from '../UI-Reusable/Portal.js';
 import PopupWindow from '../UI-Reusable/PopupWindow.js';
 import Invoice from "./Invoice";
+import "./css/console.css"
 //WORK IN PROGRESS
 const BACKEND = process.env.REACT_APP_BACKEND;
 
-const MerchantConsole = () => {
+const Accounts = () => {
 
     const [invoices, setInvoices] = useState([]);
     const [dropdownIndex, setDropdownIndex] = useState(null);
@@ -132,7 +133,7 @@ const MerchantConsole = () => {
             <div className="invoices-nondetailed-list">
                 {!invoices || invoices.length === 0 ? (
                     <div className="ndinvoicebox">
-                    <p>No receipts found</p>
+                    <p>No accounts found</p>
                     </div>
                 ) : (
                     invoices.map((invoice, index) => (
@@ -150,4 +151,4 @@ const MerchantConsole = () => {
         );
 }
 
-export default MerchantConsole;
+export default Accounts;
