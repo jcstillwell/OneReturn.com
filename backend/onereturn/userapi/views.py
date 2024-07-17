@@ -82,8 +82,7 @@ class Verify(APIView):
 class SendEmail(APIView):
     def post(self, request):
         if request.data:
-            source_email = 'jcseagle21@gmail.com'
-            email_password = 'vcibcvsaaftekzpp'
+            source_email = 'verify@onereturn.com'
             method = request.data.get('method', None)
             to_email = request.data.get('email', None)
 
@@ -96,7 +95,7 @@ class SendEmail(APIView):
                         email=to_email
                     )
                     print(MERCHANT_FRONTEND)
-                    verifyEmail(source_email, to_email, email_password, f"{MERCHANT_FRONTEND}/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
+                    verifyEmail(source_email, to_email, f"{MERCHANT_FRONTEND}/VerifyMerchant?token={tempMerchantAccount.token}",'merchant')
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempMerchantAccount.token}'}, status=status.HTTP_200_OK)
             if method == 'merchant_confirmation':
                 pass
@@ -108,7 +107,7 @@ class SendEmail(APIView):
                     tempuser = UnverifiedUser.objects.create(
                         email=to_email
                     )
-                    verifyEmail(source_email, to_email, email_password, f"{BACKEND}/verify?token={tempuser.token}")
+                    verifyEmail(source_email, to_email, f"{BACKEND}/verify?token={tempuser.token}")
                     return Response({'status':'OK', 'message':f'Message sent to {to_email}, and created temp user {tempuser.token}'}, status=status.HTTP_200_OK)
                 
 
@@ -371,7 +370,7 @@ class MerchantRegisterView(APIView):
                 account.user.save()
                 account.save()
                 merchantAPIKey = APIKey.objects.create(owner=account)
-                confirmationEmail('jcseagle21@gmail.com', account.user.email, 'vcibcvsaaftekzpp', account.merchantID, merchantAPIKey.key)
+                confirmationEmail('verify@onereturn.com', account.user.email, account.merchantID, merchantAPIKey.key)
             except IntegrityError:
                 return(Response({"status":"error",'type':'Integrity Error', "message":"Email is already in use."}, status=status.HTTP_401_UNAUTHORIZED))
             return(Response({"status":"OK" ,"message":f"successfully created account {account.user.uuid}, you should receive a confirmation email shortly with your merchant ID number and API key"}, status=status.HTTP_200_OK))

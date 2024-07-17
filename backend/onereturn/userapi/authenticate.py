@@ -5,14 +5,31 @@ from django.http import JsonResponse
 from django.db.models import F
 from core.models import APIKey
 from rest_framework.response import Response
-import twilio
-from twilio.rest import Client
+from dotenv import load_dotenv
+import boto3
 import random
+from botocore.exceptions import ClientError
 
-#TEMPORARY, STORE IN ENV VARIABLE LATER.
-twilio_sid = 'AC72e28bc17a6bb1d383f24d7527e29c55'
-twilio_auth_token = '90db36cb2a9f631d3aa901120b0f9d09'
-client = Client(twilio_sid, twilio_auth_token)
+
+#This file was named at the beginning of the project when I had no idea what I was doing and now I dont want to find everywhere it is referenced.
+#really should call this communications.py or something, maybe one day.
+
+#removes old env vars
+os.environ.pop('AWS_ACCESS_KEY_ID', None)
+os.environ.pop('AWS_SECRET_ACCESS_KEY', None)
+os.environ.pop('AWS_REGION', None)
+
+load_dotenv()
+
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+print(AWS_SECRET_ACCESS_KEY)
+
+session = boto3.Session(
+    aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+    aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'],
+    region_name=os.environ['AWS_REGION']
+)
+ses_client = boto3.client('ses', region_name=os.environ['AWS_REGION'])
 
 def incrementAPIKeyUsage(api_key):
     try:
@@ -23,24 +40,8 @@ def incrementAPIKeyUsage(api_key):
     except APIKey.DoesNotExist:
          return('API Key not found, please contact support at support@onereturn.com')
 
-def verifyPhoneNumber(phone_number):
-    verification_code = random.randit(1000, 9999)
-
-    twilio_phone_number = ''
-
-    message = client.messages.create(
-         body=f'Your verification code is: {verification_code}',
-         from_=twilio_phone_number,
-         to=phone_number
-    )
-
-def confirmationEmail(source_email, to_email, password, merchantID, merchantAPIKey):
-    msg = EmailMessage()
-    msg['Subject'] = 'Verify Your Account'
-    msg['From'] = source_email
-    msg['To'] = to_email
-
-    msg.set_content('Please take careful note of the following credentials and delete this email')
+def confirmationEmail(source_email, to_email, merchantID, merchantAPIKey):
+    subject = 'Welcome! Please take careful note of the following credentials and delete this email'
 
     html_content = f"""
             <html>
@@ -53,22 +54,39 @@ def confirmationEmail(source_email, to_email, password, merchantID, merchantAPIK
             </html>
             """
 
-    msg.add_alternative(html_content, subtype='html')
+    try:
+        response = ses_client.send_email(
+                Destination={
+                      'ToAddresses': [to_email],
+                },
+                Message={
+                    'Body': {
+                        'Html': {
+                        'Charset': "UTF-8",
+                        'Data': html_content,
+                    },
+                        'Text': {
+                        'Charset': "UTF-8",
+                        'Data': '',
+                    },
+                },
+                    'Subject': {
+                    'Charset': "UTF-8",
+                    'Data': subject,
+                },
+            },
+            Source=source_email
+        )
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent")
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-        server.login(source_email, password)
-        server.send_message(msg)
 
-def verifyEmail(source_email, to_email, password, verification_link, method=None):
+def verifyEmail(source_email, to_email, verification_link, method=None):
         
         if method == 'merchant':
-            msg = EmailMessage()
-            msg['Subject'] = 'This email has been used to sign up for a merchant account at OneReturn.com'
-            msg['From'] = source_email
-            msg['To'] = to_email
-
-            msg.set_content('Please verify your account by clicking the link: ' + verification_link)
-
+            subject = 'This email has been used to sign up for a merchant account at OneReturn.com'
             html_content = f"""
             <html>
             <body>
@@ -78,22 +96,10 @@ def verifyEmail(source_email, to_email, password, verification_link, method=None
                 <p> If you did not sign up for this service you can ignore and delete this email</p>
             </body>
             </html>
-            """
+            """ 
 
-            msg.add_alternative(html_content, subtype='html')
-
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-                server.login(source_email, password)
-                server.send_message(msg)
-                print("message sent")
         else:
-            msg = EmailMessage()
-            msg['Subject'] = 'Verify Your Account'
-            msg['From'] = source_email
-            msg['To'] = to_email
-
-            msg.set_content('Please verify your account by clicking the link: ' + verification_link)
-
+            subject = 'Verify Your Account'
             html_content = f"""
             <html>
             <body>
@@ -105,8 +111,32 @@ def verifyEmail(source_email, to_email, password, verification_link, method=None
             </html>
             """
 
-            msg.add_alternative(html_content, subtype='html')
+        body_text = f"Please verify your account by clicking the link: {verification_link}"
 
-            with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-                server.login(source_email, password)
-                server.send_message(msg)
+        try:
+            response = ses_client.send_email(
+                Destination={
+                      'ToAddresses': [to_email],
+                },
+                Message={
+                    'Body': {
+                        'Html': {
+                            'Charset': "UTF-8",
+                            'Data': html_content,
+                        },
+                        'Text': {
+                            'Charset': "UTF-8",
+                            'Data': body_text,
+                        },
+                    },
+                    'Subject': {
+                        'Charset': "UTF-8",
+                        'Data': subject,
+                    },
+                },
+                Source=source_email
+            )
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        else:
+            print("Email sent")
