@@ -21,7 +21,7 @@ os.environ.pop('AWS_REGION', None)
 
 load_dotenv()
 
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 print(AWS_SECRET_ACCESS_KEY)
 
 session = boto3.Session(
