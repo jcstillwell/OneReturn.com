@@ -15,7 +15,7 @@ services:
       - DB_PORT=5432
   frontend:
     build:
-      context: ./frontend/onereturnfe
+      context: ./frontend
     volumes:
       - react_build:/react/build
   merchant-frontend:
@@ -25,7 +25,7 @@ services:
       - merchant-react-build:/merchant-app/build
   api-frontend:
     build:
-      context: ./api.onereturn.com-fe/api-frontend
+      context: ./api.onereturn.com-fe
     volumes:
       - api-frontend-build:/api-app/build
   nginx:
