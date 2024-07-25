@@ -29,7 +29,7 @@ session = boto3.Session(
     aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'),
     region_name=os.environ.get('AWS_REGION')
 )
-ses_client = boto3.client('ses', region_name=os.environ['AWS_REGION'])
+ses_client = boto3.client('ses', region_name=os.environ.get('AWS_REGION'))
 
 def incrementAPIKeyUsage(api_key):
     try:
