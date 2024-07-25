@@ -15,10 +15,6 @@ from botocore.exceptions import ClientError
 #really should call this communications.py or something, maybe one day.
 
 #removes old env vars
-os.environ.pop('AWS_ACCESS_KEY_ID', None)
-os.environ.pop('AWS_SECRET_ACCESS_KEY', None)
-os.environ.pop('AWS_REGION', None)
-
 load_dotenv()
 
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
