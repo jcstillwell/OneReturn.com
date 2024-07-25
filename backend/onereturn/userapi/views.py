@@ -369,8 +369,8 @@ class MerchantRegisterView(APIView):
                 account.numRegisters = serialized_account.data['numRegisters']
                 account.user.save()
                 account.save()
-                merchantAPIKey = APIKey.objects.create(owner=account)
-                confirmationEmail('verify@onereturn.com', account.user.email, account.merchantID, merchantAPIKey.key)
+                merchantAPIKey = issueAPIKey(owner=account)
+                confirmationEmail('verify@onereturn.com', account.user.email, account.merchantID, merchantAPIKey)
             except IntegrityError:
                 return(Response({"status":"error",'type':'Integrity Error', "message":"Email is already in use."}, status=status.HTTP_401_UNAUTHORIZED))
             return(Response({"status":"OK" ,"message":f"successfully created account {account.user.uuid}, you should receive a confirmation email shortly with your merchant ID number and API key"}, status=status.HTTP_200_OK))

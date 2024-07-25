@@ -113,9 +113,9 @@ class UnverifiedUser(models.Model):
 
 
 class APIKey(models.Model):
-    key = models.UUIDField(default=uuid.uuid4, unique=True)
+    keyID = models.CharField(max_length=100, default=None, unique=True)
+    key = models.CharField(max_length=100 ,default=None, unique=True)
     created = models.DateTimeField(auto_now_add=True)
-    usageThisMonth = models.CharField(max_length=255, default=0)
     owner = models.ForeignKey('MerchantAccount', default=None, on_delete=models.CASCADE)
 
 class APIKeyAuthentication():

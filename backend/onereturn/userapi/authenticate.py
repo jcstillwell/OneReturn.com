@@ -3,7 +3,7 @@ from email.message import EmailMessage
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
 from django.db.models import F
-from core.models import APIKey
+from core.models import APIKey, MerchantAccount
 from rest_framework.response import Response
 from dotenv import load_dotenv
 import boto3
@@ -27,14 +27,28 @@ session = boto3.Session(
 )
 ses_client = boto3.client('ses', region_name=os.environ.get('AWS_REGION'))
 
-def incrementAPIKeyUsage(api_key):
+def issueAPIKey(owner):
+    client = boto3.client('apigateway', region_name=os.environ.get('AWS_REGION'))
+
+    response = client.create_api_key(
+        name = owner.merchantID,
+        description = "Merchant API Key",
+        enabled = True,
+        generateDistinctId = True,
+    )
+    api_key_id = response['id']
+    api_key_value = response['value']
+
     try:
-        apiKeyInstance = APIKey.objects.get(key=api_key)
-        apiKeyInstance.usageThisMonth = F('usageThisMonth') + 1
-        apiKeyInstance.save()
-        return(f'Incremented API Key: {apiKeyInstance.key} owned by {apiKeyInstance.owner.merchantID}, current usage for this month is {apiKeyInstance.usageThisMonth}')
-    except APIKey.DoesNotExist:
-         return('API Key not found, please contact support at support@onereturn.com')
+        key = APIKey.objects.create(
+            keyID = api_key_id,
+            key = api_key_value,
+            owner = owner
+        )
+        key.save()
+        return key.key
+    except MerchantAccount.DoesNotExist:
+        print("Merchant Account not found.")
 
 def confirmationEmail(source_email, to_email, merchantID, merchantAPIKey):
     subject = 'Welcome! Please take careful note of the following credentials and delete this email'
